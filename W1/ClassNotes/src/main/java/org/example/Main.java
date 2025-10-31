@@ -15,6 +15,5 @@ public class Main {
         IO.println(minnie.getName());
         minnie.setName("Maxi");
         IO.println(minnie.getName());
-
     }
 }
