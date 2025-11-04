@@ -17,6 +17,8 @@ public class Expense {
         this.merchant = merchant;
     }
 
+    public int getId() { return this.id; }
+
     // Methods
     @Override
     public String toString() {
