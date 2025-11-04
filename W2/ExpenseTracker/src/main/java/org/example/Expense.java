@@ -18,6 +18,7 @@ public class Expense {
     }
 
     public int getId() { return this.id; }
+    public double getValue() { return this.value; }
 
     // Methods
     @Override
