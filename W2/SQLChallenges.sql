@@ -10,8 +10,7 @@
 -- Test your connection with a simple query (like a select)
 -- Execute the Chinook database (from the Chinook_pg.sql file to create Chinook resources in your server)
 
-USE [Chinook];
-Go
+SELECT * FROM actor;
 
 -- BASIC CHALLENGES
 -- List all customers (full name, customer id, and country) who are not in the USA
@@ -27,7 +26,6 @@ Go
 -- (challenge: find the invoice count sales total for every year using one query)
 
 -- how many line items were there for invoice #37
--- SELECT COUNT(*) AS InvoiceCount, SUM(Total) AS SalesTotal FROM Invoice WHERE YEAR(Invo)i
 
 -- how many invoices per country? BillingCountry  # of invoices -
 -- Retrieve the total sales per country, ordered by the highest total sales first.
@@ -64,7 +62,7 @@ Go
 
 -- 3. which video track has the longest length? (use media type table)
 
--- 4.  boss employee (the one who reports to nobody)
+-- 4. boss employee (the one who reports to nobody)
 
 -- 5. how many audio tracks were bought by German customers, and what was
 --    the total price paid for them?
