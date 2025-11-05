@@ -34,14 +34,18 @@ select * from actor where first_name = 'John';
 
 -- BASIC CHALLENGES
 -- List all customers (full name, customer id, and country) who are not in the USA
-
+select * from customer where country != 'USA';
 -- List all customers from Brazil
+SELECT * FROM customer WHERE country = 'Brazil';
 
 -- List all sales agents
+-- SELECT * FROM employee WHERE title LIKE '%Agent%;
+SELECT * FROM employee WHERE title = 'Sales Support Agent';
 
 -- Retrieve a list of all countries in billing addresses on invoices
 
 -- Retrieve how many invoices there were in 2009, and what was the sales total for that year?
+SELECT COUNT(*) AS invoice_count, SUM(total) AS total_sum FROM invoice WHERE EXTRACT(YEAR FROM invoice_date) = 2009;
 
 -- (challenge: find the invoice count sales total for every year using one query)
 
@@ -53,16 +57,34 @@ select * from actor where first_name = 'John';
 
 -- JOINS CHALLENGES
 -- Every Album by Artist
+SELECT title, name from Artist join Album USING(artist_id)
 
+-- (inner keyword is optional for inner join)
 -- All songs of the rock genre
 
 -- Show all invoices of customers from brazil (mailing address not billing)
+SELECT invoice.*
+FROM invoice
+INNER JOIN customer
+ON customer.customer_id = invoice.customer_id
+WHERE customer.country = 'Brazil';
 
 -- Show all invoices together with the name of the sales agent for each one
 
 -- Which sales agent made the most sales in 2009?
+select e.first_name, e.last_name, sum(i.total) as total_sales
+from invoice i inner join customer c on i.customer_id = c.customer_id
+inner join employee e on c.support_rep_id = e.employee_id
+where EXTRACT(YEAR FROM i.invoice_date) = 2009
+group by e.employee_id
+order by total_sales desc
+limit 1
 
 -- How many customers are assigned to each sales agent?
+SELECT count(*), employe.first_name
+from employee
+inner join customer on employee.employee_id = customer.support_rep_id
+group by employee.first_name;
 
 -- Which track was purchased the most in 2010?
     
@@ -103,6 +125,10 @@ select * from actor where first_name = 'John';
 
 -- 6. list the names and countries of the customers supported by an employee
 --    who was hired younger than 35.
+
+SELECT CONCAT(customer.first_name, ' ', customer.last_name) as name, customer.country from customer
+INNER JOIN employee on employee.employee_id = customer.support_rep_id
+WHERE (EXTRACT(YEAR FROM employee.hire_date) - EXTRACT(YEAR FROM employee.birth_date)) < 35;
 
 
 -- DML exercises
