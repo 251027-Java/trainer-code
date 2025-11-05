@@ -10,6 +10,8 @@
 -- Test your connection with a simple query (like a select)
 -- Execute the Chinook database (from the Chinook_pg.sql file to create Chinook resources in your server)
 
+
+
 USE [Chinook];
 Go
 
