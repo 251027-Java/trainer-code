@@ -12,6 +12,26 @@
 
 SELECT * FROM actor;
 
+-- Comment can be done single line with --
+-- Comment can be done multi line with /* */
+
+/*
+DQL - Data Query Language
+Keywords:
+
+SELECT - retrieve data, select the columns from the resulting set
+FROM - the table(s) to retrieve data from
+WHERE - a conditional filter of the data
+GROUP BY - group the data based on one or more columns
+HAVING - a conditional filter of the grouped data
+ORDER BY - sort the data
+*/
+
+SELECT * FROM actor;
+SELECT last_name FROM actor;
+SELECT * FROM actor WHERE first_name = 'Morgan';
+select * from actor where first_name = 'John';
+
 -- BASIC CHALLENGES
 -- List all customers (full name, customer id, and country) who are not in the USA
 
@@ -49,6 +69,20 @@ SELECT * FROM actor;
 -- Show the top three best selling artists.
 
 -- Which customers have the same initials as at least one other customer?
+
+-- Which countries have the most invoices?
+
+-- Which city has the customer with the highest sales total?
+
+-- Who is the highest spending customer?
+
+-- Return the email and full name of of all customers who listen to Rock.
+
+-- Which artist has written the most Rock songs?
+
+-- Which artist has generated the most revenue?
+
+
 
 
 -- ADVANCED CHALLENGES
