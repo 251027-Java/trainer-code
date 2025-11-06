@@ -35,6 +35,7 @@ select * from actor where first_name = 'John';
 -- BASIC CHALLENGES
 -- List all customers (full name, customer id, and country) who are not in the USA
 select * from customer where country != 'USA';
+
 -- List all customers from Brazil
 SELECT * FROM customer WHERE country = 'Brazil';
 
@@ -44,16 +45,21 @@ SELECT * FROM employee WHERE title = 'Sales Support Agent';
 
 -- Retrieve a list of all countries in billing addresses on invoices
 
+
 -- Retrieve how many invoices there were in 2009, and what was the sales total for that year?
 SELECT COUNT(*) AS invoice_count, SUM(total) AS total_sum FROM invoice WHERE EXTRACT(YEAR FROM invoice_date) = 2009;
 
 -- (challenge: find the invoice count sales total for every year using one query)
+SELECT extract(YEAR FROM invoice_date) as InvoiceYear, COUNT(*) as InvoiceCount, SUM(total) AS SalesTotal FROM invoice GROUP BY extract(YEAR FROM invoice_date) ORDER BY InvoiceYear;
+
 
 -- how many line items were there for invoice #37
+SELECT extract(YEAR FROM invoice_date) as InvoiceYear, COUNT(*) as InvoiceCount, SUM(total) AS SalesTotal FROM invoice GROUP BY extract(YEAR FROM invoice_date) ORDER BY InvoiceYear;
+
 
 -- how many invoices per country? BillingCountry  # of invoices -
 -- Retrieve the total sales per country, ordered by the highest total sales first.
-
+select billing_country, count(*) as total_invoices, sum(total) as total_sales from invoice group by billing_country order by total_sales DESC;
 
 -- JOINS CHALLENGES
 -- Every Album by Artist
@@ -61,6 +67,7 @@ SELECT title, name from Artist join Album USING(artist_id)
 
 -- (inner keyword is optional for inner join)
 -- All songs of the rock genre
+
 
 -- Show all invoices of customers from brazil (mailing address not billing)
 SELECT invoice.*
@@ -70,6 +77,7 @@ ON customer.customer_id = invoice.customer_id
 WHERE customer.country = 'Brazil';
 
 -- Show all invoices together with the name of the sales agent for each one
+
 
 -- Which sales agent made the most sales in 2009?
 select e.first_name, e.last_name, sum(i.total) as total_sales
@@ -87,20 +95,35 @@ inner join customer on employee.employee_id = customer.support_rep_id
 group by employee.first_name;
 
 -- Which track was purchased the most in 2010?
-    
+
+
 -- Show the top three best selling artists.
+SELECT ar.name, SUM(il.unit_price * il.quantity) AS total_sales
+FROM invoice_line il
+INNER JOIN track t ON t.track_id = il.track_id
+INNER JOIN album a ON a.album_id = t.album_id
+INNER JOIN artist ar ON ar.artist_id = a.artist_id
+GROUP BY ar.name
+ORDER BY total_sales DESC
+LIMIT 3;
 
 -- Which customers have the same initials as at least one other customer?
 
+
 -- Which countries have the most invoices?
+
 
 -- Which city has the customer with the highest sales total?
 
+
 -- Who is the highest spending customer?
+
 
 -- Return the email and full name of of all customers who listen to Rock.
 
+
 -- Which artist has written the most Rock songs?
+
 
 -- Which artist has generated the most revenue?
 
@@ -114,14 +137,42 @@ group by employee.first_name;
 
 -- 1. which artists did not make any albums at all?
 
+
 -- 2. which artists did not record any tracks of the Latin genre?
+WITH
+    temp_data AS (
+        SELECT DISTINCT
+            album.artist_id
+        FROM track
+            JOIN genre ON track.genre_id = genre.genre_id
+            JOIN album ON album.album_id = track.album_id
+        WHERE
+            genre.name != 'Latin'
+    )
+SELECT artist.*
+FROM artist
+    JOIN temp_data ON artist.artist_id = temp_data.artist_id;
 
 -- 3. which video track has the longest length? (use media type table)
+select track.name from track join media_type on track.media_type_id = media_type.media_type_id
+where lower(media_type.name) like '%video%' and milliseconds in 
+(select max(milliseconds) from track join media_type on track.media_type_id = media_type.media_type_id
+where lower(media_type.name) like '%video%'); 
+
+
 
 -- 4. boss employee (the one who reports to nobody)
 
+
 -- 5. how many audio tracks were bought by German customers, and what was
 --    the total price paid for them?
+
+SELECT COUNT(*) as total_count, SUM(invoice_line.unit_price) FROM invoice
+JOIN invoice_line on invoice_line.invoice_id = invoice.invoice_id
+JOIN track on track.track_id = invoice_line.track_id
+JOIN media_type on media_type.media_type_id = track.media_type_id
+WHERE media_type.media_type_id != 3
+AND invoice.billing_country = 'Germany';
 
 -- 6. list the names and countries of the customers supported by an employee
 --    who was hired younger than 35.
