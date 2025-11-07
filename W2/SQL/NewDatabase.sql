@@ -74,13 +74,17 @@ Notice that we'll use CREATE TABLE mySampleSchema.myNewTable... this will tell P
 CREATE TABLE mySampleSchema.myNewTable (
     --id INTEGER UNIQUE NOT NULL, -- being UNIQUE and NOT NULL makes something a Candidate Key, but only setting the constraing of PRIMARY KEY will actually make something the PK.
     id INTEGER PRIMARY KEY,
-    email VARCHAR(100),
+   -- email VARCHAR(100) CHECK (email LIKE '%@%.%'),
+    email VARCHAR(100) CHECK (email LIKE '%_@%_.%_'),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     salary FLOAT CHECK (salary > 0),
     thirdSalary DECIMAL,
     fourthSalary NUMERIC (10, 2) -- precision (total number of digits),
     -- scale (maximum number or digits to the right of the decimal)
 );
+
+ALTER TABLE mySampleSchema.myNewTable
+ADD CONSTRAINT newcheckconstraint CHECK (thirdSalary > 0);
 
 
 /* You could just create a table, like this:
@@ -123,7 +127,66 @@ If we drop a table that has a relationship to another table, we need to drop the
 Keeping track of the order of drops is a common source of errors.
 
 A quick work around that makes that moot is to drop the constraint first. By dropping the relationship, you can then drop the tables in any order!
+
+-- DML: Data Manipulation Language
+-- DML is used to perform actions on the data in the database.
+
+-- INSERT
+-- UPDATE
+-- DELETE
+
 */
+
+SELECT * FROM mysampleschema.myNewTable;
+
+INSERT INTO mySampleSchema.myNewTable
+(id, email, salary, thirdSalary, fourthSalary)
+VALUES
+(1, 'a@b.com', 100000, 100.00, 100.00),
+(2, 'b@b.com', 100000, 100.00, 100.00),
+(3, 'c@b.com', 100000, 100.00, 100.00),
+(4, 'd@b.com', 100000, 100.00, 100.00),
+(5, 'e@b.com', 100000, 100.00, 100.00),
+(6, 'f@b.com', 100000, 100.00, 100.00),
+(7, 'g@b.com', 100000, 100.00, 100.00)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO mySampleSchema.myNewTable
+(id, email, salary, thirdSalary, fourthSalary)
+VALUES
+(8, 'a@b.com', 100000, -100.00, 100.00);
+
+INSERT INTO mySampleSchema.myNewTable
+(id, email, salary, thirdSalary, fourthSalary)
+VALUES
+(6, 'f@b.com', 100000, 100.00, 100.00);
+
+INSERT INTO mysampleschema.anothersimpletable
+(id, name, newtable_id)
+VALUES
+(1, 'Abe', 1),
+(2, 'Bob', 2),
+(3, 'Charley', 3),
+(4, 'Dan', 4),
+(5, 'Enid', 5);
+
+INSERT INTO mysampleschema.anothersimpletable
+(id, name, newtable_id)
+VALUES
+(6, 'Frank', 7);
+
+SELECT * FROM mysampleschema.mynewtable;
+SELECT * FROM mysampleschema.anothersimpletable;
+SELECT * FROM mysampleschema.anothersimpletable 
+JOIN mysampleschema.mynewtable 
+ON mysampleschema.anothersimpletable.newtable_id = mysampleschema.mynewtable.id;
+SELECT * FROM mysampleschema.anothersimpletable 
+LEFT JOIN mysampleschema.mynewtable 
+ON mysampleschema.anothersimpletable.newtable_id = mysampleschema.mynewtable.id;
+
+
+
+
 
 ALTER TABLE mysampleschema.AnotherSimpleTable 
     DROP CONSTRAINT fk_newTable_id;
