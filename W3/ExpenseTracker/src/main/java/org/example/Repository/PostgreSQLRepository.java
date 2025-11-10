@@ -2,21 +2,21 @@ package org.example.Repository;
 
 import org.example.Expense;
 import org.example.Repository.IRepository;
-
 import java.sql.*;
-
 import java.util.List;
 import java.util.ArrayList;
 
-public class H2Repository implements IRepository {
+public class PostgreSQLRepository implements IRepository {
     // Fields
-    private static final String H2_URL = "jdbc:h2:mem:expenses;DB_CLOSE_DELAY=-1";
+    private static final String Postgre_URL = "jdbc:postgresql://localhost:5432/expensesdb";
+    private static final String Postgre_User = "postgres";
+    private static final String Postgre_PW = "mysecretpassword";
     private Connection connection;
 
     // Constructor
-    public H2Repository() {
+    public PostgreSQLRepository() {
         try{
-            connection = DriverManager.getConnection(H2_URL);
+            connection = DriverManager.getConnection(Postgre_URL, Postgre_User, Postgre_PW);
             try (Statement stmt = connection.createStatement()) {
                 String sql = "CREATE SCHEMA IF NOT EXISTS ExpenseReport;" +
                         "CREATE TABLE IF NOT EXISTS ExpenseReport.Expenses (" +
@@ -27,7 +27,7 @@ public class H2Repository implements IRepository {
                         ");";
 
                 stmt.execute(sql);
-                System.out.println("Successful creation of H2 database!");
+                System.out.println("Successful creation of PostgreSQL database!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,7 +50,7 @@ public class H2Repository implements IRepository {
     }
 
     @Override
-    public Expense readExpense(int id) {
+ public Expense readExpense(int id) {
 //        String sql = "SELECT * FROM EspenseReport.Expenses WHERE id = ?";
 //        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 //            stmt.setInt(1, id);

@@ -1,4 +1,4 @@
--- Active: 1762361951000@@127.0.0.1@5432@mysampledb
+-- Active: 1762361951000@@127.0.0.1@5432@expensesdb
 /*
 SQL - Structured Query Language
 SQL is used to interact with the database, and has many different dialects, or languages. 
@@ -51,6 +51,7 @@ Let's start by creating a new database...
 */
 
 CREATE DATABASE mySampleDb;
+CREATE DATABASE expensesdb;
 
 -- Don't forget to switch to the new database! PostgreSQL is mean, and doesn't let us do that by command in the SQL, but we can do it in the UI if we need to.
 -- In VSCode, just right click, and look for "Change Active Connection". Then select "mySampleDb". If you're using someting other than VSCode, you're on your own!
