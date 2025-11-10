@@ -36,13 +36,16 @@ public class H2Repository implements IRepository {
 
     @Override
     public void createExpense(Expense expense) {
-        String sql = "INSERT INTO ExpenseReport.Expenses (id , date, price, merchant) " +
-                "Values ( ?, ?, ?, ?);";
+        String sql = "INSERT INTO ExpenseReport.Expenses (id , date, price, merchant) VALUES ( ?, ?, ?, ?);";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, expense.getId());
-            stmt.setDate(2, expense.getDate());
+            stmt.setDate(2, new java.sql.Date(expense.getDate().getTime()));
             stmt.setDouble(3, expense.getValue());
             stmt.setString(4, expense.getMerchant());
+            stmt.executeUpdate();
+            System.out.println("Expense created successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
