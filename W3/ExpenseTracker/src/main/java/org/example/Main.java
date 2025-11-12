@@ -23,7 +23,8 @@ public class Main {
 //        IRepository repo = new CSVRepository();
 //        IRepository repo = new JSONRepository();
 //        IRepository repo = new H2Repository();
-        IRepository repo = new PostgreSQLRepository();
+//        IRepository repo = new PostgreSQLRepository();
+        IRepository repo = new MongoRepository();
 
 //        System.out.println("Creating a test expense:");
 //        expenses.add(new Expense(1, new Date(), 99.95, "Walmart"));
