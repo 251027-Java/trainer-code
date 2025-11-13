@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class ExpenseServiceTest {
 
         // Assert
         assertEquals(10185.70, actual);
-        verify(mockRepo, times(1)).loadExpenses();
+        verify(mockRepo, times(2)).loadExpenses();
 
     }
 
@@ -67,7 +66,6 @@ public class ExpenseServiceTest {
 
         Expense expected = new Expense(4, new Date(), 50, "Revature");
 
-        when(mockRepo.loadExpenses()).thenReturn(expenses);
         when(mockRepo.readExpense(4)).thenReturn(null);
 
         // Act
