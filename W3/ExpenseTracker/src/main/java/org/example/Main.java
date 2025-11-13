@@ -1,9 +1,7 @@
 package org.example;
 
 import org.example.Repository.*;
-
 import org.example.Service.ExpenseService;
-
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -37,9 +35,12 @@ public class Main {
 //        System.out.println(expenses);
 
         ExpenseService service = new ExpenseService(repo);
-        service.createNewExpense(1, 99.95, "Walmart");
-//        service.sumExpenses();
-//        service.printExpenses();
+
+        System.out.println("Printing Expenses: ");
+        service.printExpenses();
+
+        System.out.println("Summing Expenses: ");
+        service.sumExpenses();
 
         System.out.println("Expense Tracker Closing...");
     }

@@ -56,8 +56,11 @@ public class MongoRepository implements IRepository{
     @Override
     public void updateExpense(Expense expense) {
         Document doc = expenseToDocument(expense);
-        expensesCollection.updateOne(Filters.eq("_id", expense.getId()), doc);
-
+        if( this.readExpense(expense.getId()) == null) {
+            this.createExpense(expense);
+        } else {
+            expensesCollection.updateOne(Filters.eq("_id", expense.getId()), doc);
+        }
     }
 
     @Override
@@ -77,6 +80,8 @@ public class MongoRepository implements IRepository{
 
     @Override
     public void saveExpenses(List<Expense> expenses) {
-
+        for ( Expense e : expenses ){
+            this.updateExpense(e);
+        }
     }
 }
