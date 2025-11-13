@@ -42,13 +42,13 @@ public class ExpenseService {
         System.out.println(repo.loadExpenses());
     }
 
-    public void sumExpenses(){
+    public double sumExpenses(){
         List<Expense> expenses = repo.loadExpenses();
         double sum = 0;
         for (Expense e : expenses ){
             sum += e.getValue();
         }
-        System.out.println(sum);
+        return sum;
     }
 
     public void seed(){
