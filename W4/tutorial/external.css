@@ -1,0 +1,16 @@
+/* @author Andrew Crenwelge */
+body {
+  max-width: 800px;
+  margin: auto;
+  font-family: Helvetica, Arial; /* multiple values! */
+}
+ul { 
+  color: green;
+}
+pre > code {
+  background-color: inherit;
+}
+code {
+  background-color: #fbe5e1;
+  color: #c0341d;
+}
