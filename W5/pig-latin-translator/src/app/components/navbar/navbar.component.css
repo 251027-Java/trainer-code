@@ -18,6 +18,15 @@ ul li a {
   text-decoration: none;
 }
 
+.option {
+  display: block;
+  color: white;
+  text-align: center;
+  font-size: 35px;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
 ul li a:hover {
   background-color: #b98181;
 }
