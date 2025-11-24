@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-child-component',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './child-component.component.css'
 })
 export class ChildComponentComponent {
+
+  //We can pass data from parent to child with @Input
+  //The value is passed through property binding when the parent renders the child
+  @Input() index:number = 0
 
 }

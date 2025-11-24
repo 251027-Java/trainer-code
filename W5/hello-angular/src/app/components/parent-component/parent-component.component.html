@@ -6,7 +6,7 @@
 <div>
     <!-- "for every element in the array called arr, render this text" -->
 
-    <app-child-component></app-child-component>
+    <app-child-component *ngFor="let num of arr" [index]="num"></app-child-component>
 
    <!-- <p *ngFor = "let num of arr; let i = index">Hello I'm child {{i}}</p> -->
 </div>

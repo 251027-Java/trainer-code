@@ -31,5 +31,4 @@ export class ParentComponentComponent {
   //This variable will hold the user's inputted name
   nameInput:string = ""
 
-
 }
