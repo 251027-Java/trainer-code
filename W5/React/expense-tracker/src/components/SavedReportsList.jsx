@@ -1,4 +1,4 @@
-const SavedReportsList = ({ reports }) => {
+const SavedReportsList = ({ reports, onDelete }) => {
     if (reports.length === 0) {
         return null;
     };
@@ -20,8 +20,17 @@ const SavedReportsList = ({ reports }) => {
                             <p>Report {report.id.substring(2, 6)}</p>
                             <p>Generated on {report.date} - {report.expenseCount} expenses</p>
                         </div>
-                        <div className="text-indigo-700 font-mono font-bold text-lg">
-                            <p>${report.total}</p>
+                        <div className='flex items-center gap-4'>
+                            <div className="text-indigo-700 font-mono font-bold text-lg">
+                                <p>${report.total}</p>
+                            </div>
+                            <div>
+                                <button
+                                onClick ={ () => onDelete(report.id) }
+                                className="text-red-600 hover:text-red-800 font-bold text-lg rounded px-2 py-2 ">
+                                    X
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}

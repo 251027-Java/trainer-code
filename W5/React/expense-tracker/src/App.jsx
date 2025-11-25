@@ -1,43 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/Expenses/ExpenseList'
 import ExpenseFilter from './components/Expenses/ExpenseFilter'
 import ReportSummary from './components/ReportSummary'
 import SavedReportsList from './components/SavedReportsList'
 
-const Dummy_Expenses = [
-  {
-    id: "e1",
-    title: "Testing",
-    amount: "123",
-    date: new Date("2023, 1, 1"),
-  },
-  {
-    id: "e2",
-    title: "Testing2",
-    amount: "234",
-    date: new Date("2023, 1, 1"),
-  },
-  {
-    id: "e3",
-    title: "Testing3",
-    amount: "345",
-    date: new Date(2023, 0, 1),
-  },
-  {
-    id: "e4",
-    title: "Testing4",
-    amount: "456",
-    date: new Date("2023, 3, 1"),
-  },
-]
-
 function App() {
 
   const [expenses, setExpenses] = useState(Dummy_Expenses);
   const [filteredYear, setFilteredYear] = useState('2023');
   const [selectedIds, setSelectedIds] = useState([]);
-  const [savedReports, setSavedReports] = useState([]);
+  const [savedReports, setSavedReports] = useState(() => {
+    try {
+      const savedReports = localStorage.getItem('savedReports');
+      return savedReports ? JSON.parse(savedReports) : [];
+    } catch (error) {
+      console.warn("failed to retrieve from local storage", error);
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('savedReports', JSON.stringify(savedReports));
+  }, [savedReports]);
+
+  const deleteReportHandler = (id) => { // pass in the id to remove/delete
+    setSavedReports((prevReports) => prevReports.filter(report => report.id !== id)); 
+    // remove the report from the saved reports
+  };
 
   const addExpenseHandler = (expense) => {
     const expenseWithId = { ...expense, id: Math.random().toString() }
@@ -55,17 +45,17 @@ function App() {
   };
 
   const toggleExpenseHandler = (id) => {
-    setSelectedIds( (prevSelected) => {
+    setSelectedIds((prevSelected) => {
       if (prevSelected.includes(id)) {
         return prevSelected.filter((selectedId) => selectedId !== id);
       } else {
         return [...prevSelected, id];
       }
-    } );
+    });
   };
 
   const saveReportHandler = (report) => {
-    setSavedReports( prevReports => [...prevReports, report]); // adds a new report to the saved reports
+    setSavedReports(prevReports => [...prevReports, report]); // adds a new report to the saved reports
     setSelectedIds([]); // clears all of the checkboxes when we create a new report
   };
 
@@ -73,27 +63,28 @@ function App() {
     return expense.date.getFullYear().toString() === filteredYear;
   });
 
-  const reportExpenses = expenses.filter((expense) => {return selectedIds.includes(expense.id);});
+  const reportExpenses = expenses.filter((expense) => { return selectedIds.includes(expense.id); });
 
   return (
     <div className=" min-h-screen bg-slate-900 px-4 font-sans">
       <h1 className=" text-3xl text-slate-100 font-bold"> Testing testing, 123!</h1>
 
       <ExpenseFilter
-        selected={ filteredYear }
-        onChangeFilter={ filterChangeHandler } />
+        selected={filteredYear}
+        onChangeFilter={filterChangeHandler} />
       <ExpenseForm
-        onSaveExpenseData={ addExpenseHandler } />
+        onSaveExpenseData={addExpenseHandler} />
       <ExpenseList
-        items={ filteredExpenses } 
-        selectedIds={ selectedIds }
-        onToggleItem={ toggleExpenseHandler }/>
-      <ReportSummary 
-        selectedExpenses={ reportExpenses }
-        onSave={ saveReportHandler }
-        closeHandler={ saveReportHandler } />
+        items={filteredExpenses}
+        selectedIds={selectedIds}
+        onToggleItem={toggleExpenseHandler} />
+      <ReportSummary
+        selectedExpenses={reportExpenses}
+        onSave={saveReportHandler}
+        closeHandler={ () =>setSelectedIds([]) } />
       <SavedReportsList
-        reports={ savedReports } />
+        reports={savedReports} 
+        onDelete={deleteReportHandler}/>
     </div>
   )
 }
