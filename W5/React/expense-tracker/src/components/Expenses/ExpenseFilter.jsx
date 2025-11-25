@@ -27,6 +27,6 @@ const ExpenseFilter = ({ selected, onChangeFilter }) => {
                 </select>
         </div>
     );
-}
+};
 
 export default ExpenseFilter;
