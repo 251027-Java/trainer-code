@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslatorServiceService } from '../../services/translator-service.service';
 
 @Component({
   selector: 'app-translate',
@@ -11,6 +12,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './translate.component.css'
 })
 export class TranslateComponent {
+
+  //Constructor injection again
+  constructor(public translatorService:TranslatorServiceService){}
 
   //Variables to hold the English and the Pig Latin
   englishText:string = ""
@@ -49,6 +53,10 @@ export class TranslateComponent {
 
     // Join the translated words back into a single string
     this.pigLatinText = translatedWords.join('');
+
+    //Increment the counter in the Service
+    this.translatorService.translationCounter++
+
   }
 
 }
