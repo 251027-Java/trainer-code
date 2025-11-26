@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/Expenses/ExpenseList'
 import ExpenseFilter from './components/Expenses/ExpenseFilter'
 import ReportSummary from './components/ReportSummary'
 import SavedReportsList from './components/SavedReportsList'
 import ExpensesService from './services/ExpensesService';
+import Navigation from './components/pages/Navigation';
+import SavedReportsPage from './components/pages/SavedReportsPage'
+import ExpensesDashboard from './components/pages/ExpensesDashboard'
 
 function App() {
+  const navigate = useNavigate();
 
   const [expenses, setExpenses] = useState([]);
   const [filteredYear, setFilteredYear] = useState('2023');
@@ -55,16 +60,17 @@ function App() {
     setIsLoading(true);
     setError(null);
 
-    try{
+    try {
       ExpensesService.deleteExpense(id);
-    setExpenses((prevExpenses) => prevExpenses.filter(expense => expense.id !== id));
+      setExpenses((prevExpenses) => prevExpenses.filter(expense => expense.id !== id));
     } catch (error) {
       setError(error.message);
       console.warn("Failed to delete from server!", error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
+
   const deleteReportHandler = (id) => { // pass in the id to remove/delete
     setSavedReports((prevReports) => prevReports.filter(report => report.id !== id));
     // remove the report from the saved reports
@@ -79,7 +85,7 @@ function App() {
       const newExpenseData = await ExpensesService.postExpense(expense);
 
       // unpack the json, and add the date to the new expense
-      const expenseWithDate =  { ...newExpenseData, date: new Date(newExpenseData.date) };
+      const expenseWithDate = { ...newExpenseData, date: new Date(newExpenseData.date) };
 
       // add the new expense to the list of all expenses
       setExpenses((prev) => [expenseWithDate, ...prev]);
@@ -117,26 +123,27 @@ function App() {
   const reportExpenses = expenses.filter((expense) => { return selectedIds.includes(expense.id); });
 
   return (
-    <div className=" min-h-screen bg-slate-900 px-4 font-sans">
-      <h1 className=" text-3xl text-slate-100 font-bold"> Testing testing, 123!</h1>
+    <div>
+      <Navigation />
 
-      <ExpenseFilter
-        selected={filteredYear}
-        onChangeFilter={filterChangeHandler} />
-      <ExpenseForm
-        onSaveExpenseData={addExpenseHandler} />
-      <ExpenseList
-        items={filteredExpenses}
-        selectedIds={selectedIds}
-        onToggleItem={toggleExpenseHandler} 
-        onDeleteItem={deleteExpenseHandler}/>
-      <ReportSummary
-        selectedExpenses={reportExpenses}
-        onSave={saveReportHandler}
-        closeHandler={() => setSelectedIds([])} />
-      <SavedReportsList
-        reports={savedReports}
-        onDelete={deleteReportHandler} />
+      <Routes>
+        <Route 
+          path="/dashboard"
+          element={ <ExpensesDashboard /> }
+          />
+        <Route 
+          path="/reports"
+          element= { <SavedReportsPage 
+                        savedReports= {savedReports}
+                        deleteReportHandler = {deleteReportHandler}/>}
+          />
+        <Route
+          path="/"
+          element={
+            <div>
+              <Link to ="/dashboard">Go To Dashboard</Link>
+            </div>} />
+      </Routes>
     </div>
   )
 }

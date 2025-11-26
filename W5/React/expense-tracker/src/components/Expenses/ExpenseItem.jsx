@@ -17,7 +17,7 @@ const ExpenseItem = ({ id, title, amount, date, isSelected, onToggle, onDelete }
             <h2>{amount}</h2>
             <button 
             onClick = {() => onDelete(id)}
-            className = "bg-red-600 text-red p-2 rounded-lg shadow-sm hover:bg-red-700 hover:shadow-md">X</button>
+            className = "bg-red-600 text-red p-2 font-bold rounded-lg shadow-sm hover:bg-red-700 hover:shadow-md">X</button>
         </div>
     );
 };
