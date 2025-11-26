@@ -25,10 +25,13 @@ const ExpenseForm = (prop) => {
     const submitHandler = (event) => {
         event.preventDefault();
 
+        // new Date( enteredDate ? `${enteredDate}T00:00:00` : new Date().toISOString());
+        // new Date(enteredDate + 'T00:00:00');
+
         const expenseData = {
             title: enteredTitle,
             amount: enteredAmount,
-            date: new Date(enteredDate)
+            date:  new Date(`${enteredDate}T00:00:00`)
         };
         console.log(expenseData);
 
@@ -70,7 +73,7 @@ const ExpenseForm = (prop) => {
                         <label className="block text-indigo-100 text-sm font-bold">Date</label>
                         <input
                             type="date"
-                            min="2022-01-01"
+                            min="2020-01-01"
                             max="2035-12-31"
                             value={enteredDate}
                             onChange={dateChangeHandler}

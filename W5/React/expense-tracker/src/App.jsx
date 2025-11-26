@@ -48,24 +48,47 @@ function App() {
         setIsLoading(false);
       }
     }
-
     fetchExpenses();
   }, []);
 
+  const deleteExpenseHandler = async (id) => {
+    setIsLoading(true);
+    setError(null);
+
+    try{
+      ExpensesService.deleteExpense(id);
+    setExpenses((prevExpenses) => prevExpenses.filter(expense => expense.id !== id));
+    } catch (error) {
+      setError(error.message);
+      console.warn("Failed to delete from server!", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   const deleteReportHandler = (id) => { // pass in the id to remove/delete
     setSavedReports((prevReports) => prevReports.filter(report => report.id !== id));
     // remove the report from the saved reports
   };
 
-  const addExpenseHandler = (expense) => {
-    const expenseWithId = { ...expense, id: Math.random().toString() }
+  const addExpenseHandler = async (expense) => {
+    setIsLoading(true);
+    setError(null);
 
-    setExpenses((prevExpenses) => {
-      return [expenseWithId, ...prevExpenses] //pervious expenses is an array/collection
-      // [ expense, old expense 1, old expense 2, old expense 3 ]
-      // return [expenseWithId, prevExpenses] //
-      //  [ expense, Array of Expenses ]
-    })
+    try {
+      // run the post request, geting back the json of the new expense (with ID!)
+      const newExpenseData = await ExpensesService.postExpense(expense);
+
+      // unpack the json, and add the date to the new expense
+      const expenseWithDate =  { ...newExpenseData, date: new Date(newExpenseData.date) };
+
+      // add the new expense to the list of all expenses
+      setExpenses((prev) => [expenseWithDate, ...prev]);
+
+    } catch (error) {
+      setError('Failed to save expense! ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const filterChangeHandler = (selectedYear) => {
@@ -105,7 +128,8 @@ function App() {
       <ExpenseList
         items={filteredExpenses}
         selectedIds={selectedIds}
-        onToggleItem={toggleExpenseHandler} />
+        onToggleItem={toggleExpenseHandler} 
+        onDeleteItem={deleteExpenseHandler}/>
       <ReportSummary
         selectedExpenses={reportExpenses}
         onSave={saveReportHandler}
