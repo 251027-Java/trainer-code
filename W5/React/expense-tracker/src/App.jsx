@@ -4,10 +4,11 @@ import ExpenseList from './components/Expenses/ExpenseList'
 import ExpenseFilter from './components/Expenses/ExpenseFilter'
 import ReportSummary from './components/ReportSummary'
 import SavedReportsList from './components/SavedReportsList'
+import ExpensesService from './services/ExpensesService';
 
 function App() {
 
-  const [expenses, setExpenses] = useState(Dummy_Expenses);
+  const [expenses, setExpenses] = useState([]);
   const [filteredYear, setFilteredYear] = useState('2023');
   const [selectedIds, setSelectedIds] = useState([]);
   const [savedReports, setSavedReports] = useState(() => {
@@ -19,13 +20,40 @@ function App() {
       return [];
     }
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     localStorage.setItem('savedReports', JSON.stringify(savedReports));
   }, [savedReports]);
 
+  useEffect(() => {
+    async function fetchExpenses() {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const data = await ExpensesService.getAll();
+        const transformedData = data.map(item => ({
+          ...item,
+          date: new Date(item.date)
+        }));
+        setExpenses(transformedData);
+      } catch (error) {
+        console.warn("Failed to retrieve from server!", error);
+        setError(error.message);
+        // default?
+      } finally {
+        console.log("finally");
+        setIsLoading(false);
+      }
+    }
+
+    fetchExpenses();
+  }, []);
+
   const deleteReportHandler = (id) => { // pass in the id to remove/delete
-    setSavedReports((prevReports) => prevReports.filter(report => report.id !== id)); 
+    setSavedReports((prevReports) => prevReports.filter(report => report.id !== id));
     // remove the report from the saved reports
   };
 
@@ -81,10 +109,10 @@ function App() {
       <ReportSummary
         selectedExpenses={reportExpenses}
         onSave={saveReportHandler}
-        closeHandler={ () =>setSelectedIds([]) } />
+        closeHandler={() => setSelectedIds([])} />
       <SavedReportsList
-        reports={savedReports} 
-        onDelete={deleteReportHandler}/>
+        reports={savedReports}
+        onDelete={deleteReportHandler} />
     </div>
   )
 }
