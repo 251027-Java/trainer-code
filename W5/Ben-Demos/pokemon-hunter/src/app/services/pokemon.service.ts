@@ -8,7 +8,8 @@ import { Pokemon } from '../interfaces/pokemon';
 })
 export class PokemonService {
 
-  //TODO: An Array that holds our caught Pokemon
+  //An Array that holds our caught Pokemon
+  caughtPokemon:Pokemon[] = []
 
   //Inject HttpClient so we can make HTTP requests
   constructor(private http:HttpClient) { }

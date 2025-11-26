@@ -1,10 +1,11 @@
 import { Component, signal, WritableSignal } from '@angular/core';
 import { PokemonService } from '../../services/pokemon.service';
 import { Pokemon } from '../../interfaces/pokemon';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-catch',
-  imports: [],
+  imports: [TitleCasePipe],
   templateUrl: './catch.component.html',
   styleUrl: './catch.component.css'
 })
@@ -14,7 +15,7 @@ export class CatchComponent {
   constructor(private pokemonService:PokemonService){} 
 
   //Variable to hold the pokemon from PokeAPI
-  pokemon: WritableSignal<Pokemon | null> = signal(null);
+  pokemon: WritableSignal<Pokemon> = signal({id:0, name:"", sprite:""});
 
   //ngOnInit - a component lifecycle method that lets us define logic to fire when the component renders
   ngOnInit(){
@@ -32,6 +33,13 @@ export class CatchComponent {
       this.pokemon.set(data)
     })
 
+  }
+
+  //The method that catches a Pokemon and stores it in the Service
+  catchPokemon(){
+    this.pokemonService.caughtPokemon.push(this.pokemon())
+    this.pokemon.set({id:0, name:"", sprite:""})
+    alert("Caught " + this.pokemon().name)
   }
 
 }
