@@ -1,11 +1,11 @@
 import { Component, signal, WritableSignal } from '@angular/core';
 import { PokemonService } from '../../services/pokemon.service';
 import { Pokemon } from '../../interfaces/pokemon';
-import { TitleCasePipe } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-catch',
-  imports: [TitleCasePipe],
+  imports: [TitleCasePipe, CommonModule],
   templateUrl: './catch.component.html',
   styleUrl: './catch.component.css'
 })
@@ -38,8 +38,8 @@ export class CatchComponent {
   //The method that catches a Pokemon and stores it in the Service
   catchPokemon(){
     this.pokemonService.caughtPokemon.push(this.pokemon())
-    this.pokemon.set({id:0, name:"", sprite:""})
     alert("Caught " + this.pokemon().name)
+    this.pokemon.set({id:0, name:"", sprite:""})
   }
 
 }
