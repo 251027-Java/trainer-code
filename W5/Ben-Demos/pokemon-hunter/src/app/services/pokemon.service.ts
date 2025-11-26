@@ -12,7 +12,7 @@ export class PokemonService {
   caughtPokemon:Pokemon[] = []
 
   //Inject HttpClient so we can make HTTP requests
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {}
 
   //method to get one random pokemon
   getPokemon():Observable<Pokemon>{

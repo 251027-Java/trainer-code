@@ -4,8 +4,10 @@
 
     <h3 class="mt-3 border-bottom">You have {{pokemonService.caughtPokemon.length}} Pokemon</h3>
 
-    <div *ngFor="let pokemon of pokemonService.caughtPokemon">
-        <p>Hello</p>
+    <div class="d-flex flex-wrap">
+        <div *ngFor="let pokemon of pokemonService.caughtPokemon">
+            <img src="{{pokemon.sprite}}" alt="">
+        </div>
     </div>
 
 </div>

@@ -27,4 +27,22 @@ export class LoginComponent {
     }
   }
 
+
+  /* Here's what an HTTP POST request might look like - 
+  This would live in the UserService? AuthService? Then get subscribed to from here
+  
+  fakeHttpLogin(username:string, password:string):Observable<any>{
+    return this.http.post("URL_TO_YOUR_API", {username, password})
+  }
+  
+  */
+
+  //MAIN DIFFERENCES FROM GET: 
+    //-post(), not get()
+    //we include a method body (in this case, the login credentials)
+
+  //there's a third param I didn't show - the config object!
+    //You can include stuff like headers, content-type, Auth tokens
+
+
 }
