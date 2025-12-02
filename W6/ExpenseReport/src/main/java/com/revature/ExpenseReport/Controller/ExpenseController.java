@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/expenses")
+@RequestMapping("/api/expenses") // domain:port/api/expenses
 public class ExpenseController {
     // Fields
     private final ExpenseService service;
@@ -21,12 +21,12 @@ public class ExpenseController {
     }
 
     // Methods
-    @GetMapping
+    @GetMapping // domain:port/api/expenses
     public List<Expense> getAllExpenses() {
         return service.getAllExpenses(); // all of the expenses!
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search") // domain:port/api/expenses/search?merchant=Walmart
     public List<Expense> search (@RequestParam String merchant) {
         return service.searchByExpenseMerchant(merchant); // all expenses for a merchant
     }
