@@ -1,4 +1,4 @@
-package com.revature.ExpenseReport.Controllers;
+package com.revature.ExpenseReport.Controller;
 
 // Spring uses REFLECTION to recognize our ANNOTATIONS
 
