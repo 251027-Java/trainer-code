@@ -1,11 +1,7 @@
 package com.revature.ExpenseReport.Controller;
 
-import com.revature.ExpenseReport.Model.Expense;
 import com.revature.ExpenseReport.Service.ExpenseService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,12 +18,32 @@ public class ExpenseController {
 
     // Methods
     @GetMapping // domain:port/api/expenses
-    public List<Expense> getAllExpenses() {
+    public List<ExpenseDTO> getAllExpenses() {
         return service.getAllExpenses(); // all of the expenses!
     }
 
     @GetMapping("/search") // domain:port/api/expenses/search?merchant=Walmart
-    public List<Expense> search (@RequestParam String merchant) {
+    public List<ExpenseDTO> search (@RequestParam String merchant) {
         return service.searchByExpenseMerchant(merchant); // all expenses for a merchant
     }
+
+    // Create an expense
+    @PostMapping
+    public ExpenseDTO create(@RequestBody ExpenseWOIDDTO expensedto) {
+        return service.create(expensedto);
+    }
+
+
+    // Expense lookup by > a value? > $100
+
+    // Get expense by ID
+    @GetMapping("/{id}")
+    public ExpenseDTO getById(@PathVariable String id){
+        return service.getById(id);
+    }
+
+
+    // Update/modify an expense
+
+    // Delete an expense
 }
