@@ -1,6 +1,7 @@
 package com.revature.ExpenseReport.Model;
 
 import jakarta.persistence.*;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +15,12 @@ public class Expense {
     @Column(name = "expenseMerchant") private String expenseMerchant; // manage column information for this variable
     private LocalDate expenseDate;
     private BigDecimal expenseValue;
+
+    @ManyToOne()
+    @JoinColumn(name = "reportId")
+    @ToString.Exclude
+    private Report report;
+
 
     // Constructor
     public Expense() {}
