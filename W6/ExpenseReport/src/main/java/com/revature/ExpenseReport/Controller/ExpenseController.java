@@ -42,8 +42,19 @@ public class ExpenseController {
         return service.getById(id);
     }
 
-
     // Update/modify an expense
+    @PutMapping("/{id}")
+    public ExpenseDTO update(@PathVariable String id, @RequestBody ExpenseDTO dto) {
+        return service.update(id, dto);
+    }
 
     // Delete an expense
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        service.delete(id);
+    }
 }
+
+
+
+
