@@ -31,5 +31,3 @@ public class ExpenseController {
         return service.searchByExpenseMerchant(merchant); // all expenses for a merchant
     }
 }
-
-

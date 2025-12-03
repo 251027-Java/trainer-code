@@ -22,6 +22,7 @@ public class Expense {
     private Report report;
 
 
+
     // Constructor
     public Expense() {}
 

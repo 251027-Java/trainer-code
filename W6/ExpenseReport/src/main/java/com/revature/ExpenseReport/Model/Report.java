@@ -1,6 +1,5 @@
 package com.revature.ExpenseReport.Model;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Report {
     // Fields
+
     @Id @GeneratedValue
     private String reportId;
     private String reportTitle;
@@ -22,14 +22,11 @@ public class Report {
     @OneToMany(mappedBy = "report")
     private List<Expense> reportExpenses = new ArrayList<>();
 
-    private List<Expense> reportExpenses = new ArrayList<>();
-
-    // Constructors
-    public Report (String title, String status){
+    // Constructor
+    public Report (String title, String status) {
         this.reportTitle = title;
         this.reportStatus = status;
     }
 
     // Methods
-
 }
