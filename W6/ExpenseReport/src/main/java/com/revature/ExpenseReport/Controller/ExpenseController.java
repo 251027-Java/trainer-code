@@ -19,7 +19,7 @@ public class ExpenseController {
     // Methods
     @GetMapping // domain:port/api/expenses
     public List<ExpenseDTO> getAllExpenses() {
-        return service.getAllExpenses();
+        return service.getAllExpenses(); // all of the expenses!
     }
 
     @GetMapping("/search") // domain:port/api/expenses/search?merchant=Walmart
@@ -27,23 +27,34 @@ public class ExpenseController {
         return service.searchByExpenseMerchant(merchant); // all expenses for a merchant
     }
 
-    @GetMapping("/{id}")
-    public ExpenseDTO getByiD(@PathVariable String id) {
-        return service.getByiD(id);
-    }
-
+    // Create an expense
     @PostMapping
-    public ExpenseDTO create(@RequestBody ExpenseWOIDDTO dto) {
-        return service.create(dto);
+    public ExpenseDTO create(@RequestBody ExpenseWOIDDTO expensedto) {
+        return service.create(expensedto);
     }
 
+
+    // Expense lookup by > a value? > $100
+
+    // Get expense by ID
+    @GetMapping("/{id}")
+    public ExpenseDTO getById(@PathVariable String id){
+        return service.getById(id);
+    }
+
+    // Update/modify an expense
     @PutMapping("/{id}")
     public ExpenseDTO update(@PathVariable String id, @RequestBody ExpenseDTO dto) {
         return service.update(id, dto);
     }
 
+    // Delete an expense
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
 }
+
+
+
+

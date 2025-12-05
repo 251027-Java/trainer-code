@@ -1,66 +1,46 @@
 package com.revature.ExpenseReport.Controller;
 
-import com.revature.ExpenseReport.Model.Report;
 import com.revature.ExpenseReport.Service.ReportService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/expenses/reports")
+@RequestMapping("/api/reports")
 public class ReportController {
     // Fields
     private final ReportService service;
 
     // Constructor
-    public ReportController(ReportService service) {
+    public ReportController(ReportService service){
         this.service = service;
     }
 
     // Methods
-
-    // GET Display all reports
     @GetMapping
-    public List<ReportDTO> getAllReports() {
-        return service.getAllReports();
+    public List<ReportDTO> getAll() {
+        return service.getAll();
     }
 
-    // GET Display report by title
-    @GetMapping("/title")
-    public ReportDTO getByTitle(@RequestParam String title) {
-        return service.getByTitle(title);
-    }
-
-    // GET Display report by id
     @GetMapping("/{id}")
     public ReportDTO getById(@PathVariable String id) {
         return service.getById(id);
     }
 
-    // GET Display reports with specific status
-    //TODO: Decide report status is boolean or String
-    @GetMapping("/status") // /api/expenses/reports/status?s=reimbursed
-    // /api/expenses/reports/status?s=notreimbursed
-    public List<ReportDTO> getByStatus(@RequestParam String s) {
-        return service.getByReportStatus(s);
-    }
-
-    // POST Create a new report
     @PostMapping
-    public ReportDTO create(@RequestBody ReportWOIDDTO report) {
-        // report only has title and list of expenses
-        // id is generated, and status default
+    @ResponseStatus(HttpStatus.CREATED)
+    public ReportDTO create(@RequestBody ReportDTO report) {
         return service.create(report);
     }
 
-    // PATCH Update report status
-    @PatchMapping("/{id}")
-    public ReportDTO updateStatus(@PathVariable String id) {
-        return service.updateStatus(id);
+    @PutMapping("/{id}")
+    public ReportDTO update(@PathVariable String id, @RequestBody ReportDTO report) {
+        return service.update(id, report);
     }
 
-    // DELETE Delete an old report
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
