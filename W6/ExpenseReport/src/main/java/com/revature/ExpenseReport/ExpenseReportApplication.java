@@ -13,6 +13,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,7 +27,14 @@ public class ExpenseReportApplication {
 		SpringApplication.run(ExpenseReportApplication.class, args);
 	}
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
     @Bean // Bean is a single method that is run after the application is started
+<<<<<<< HEAD
 <<<<<<< HEAD
     CommandLineRunner seedData (ExpenseRepository expenseRepository, AppUserRepository appUserRepository) {
         return args -> {
@@ -43,6 +52,9 @@ public class ExpenseReportApplication {
             var e3 = new Expense(LocalDate.now().minusDays(2), new BigDecimal(99.88), "Buffalo Wild Wings");
 =======
     CommandLineRunner seedData (ExpenseRepository expenseRepository, ReportRepository reportRepository, AppUserRepository appUserRepository) {
+=======
+    CommandLineRunner seedData (ExpenseRepository expenseRepository, ReportRepository reportRepository, AppUserRepository appUserRepository, PasswordEncoder encoder) {
+>>>>>>> b556102df841b5f8cc9df419ed6f9bc8ee9950cd
         return args -> {
 
             // Report seed
@@ -69,9 +81,14 @@ public class ExpenseReportApplication {
             //AppUser seed
 =======
             // AppUser seed
+<<<<<<< HEAD
 >>>>>>> origin
             appUserRepository.save(new AppUser("admin", "password123", "ADMIN"));
             appUserRepository.save(new AppUser("user", "secret", "USER"));
+=======
+            appUserRepository.save(new AppUser("admin", encoder.encode("password123"), "ADMIN"));
+            appUserRepository.save(new AppUser("user", encoder.encode("secret"), "USER"));
+>>>>>>> b556102df841b5f8cc9df419ed6f9bc8ee9950cd
         };
     }
 }
