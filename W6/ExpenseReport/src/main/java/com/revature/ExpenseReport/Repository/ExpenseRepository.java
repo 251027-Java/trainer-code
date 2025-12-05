@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, String> {
-     //@Query("SELECT * FROM expenses WHERE expenseMerchant = merchant")
+    // @Query("SELECT * FROM expenses WHERE expenseMerchant = merchant")
     List<Expense> findByExpenseMerchant(String merchant);
 }
 
