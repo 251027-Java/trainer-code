@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,8 +24,14 @@ public class ExpenseReportApplication {
 		SpringApplication.run(ExpenseReportApplication.class, args);
 	}
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
     @Bean // Bean is a single method that is run after the application is started
-    CommandLineRunner seedData (ExpenseRepository expenseRepository, ReportRepository reportRepository, AppUserRepository appUserRepository) {
+    CommandLineRunner seedData (ExpenseRepository expenseRepository, ReportRepository reportRepository, AppUserRepository appUserRepository, PasswordEncoder encoder) {
         return args -> {
 
             // Report seed
@@ -45,8 +53,8 @@ public class ExpenseReportApplication {
             expenseRepository.saveAll(List.of(e1, e2, e3));
 
             // AppUser seed
-            appUserRepository.save(new AppUser("admin", "password123", "ADMIN"));
-            appUserRepository.save(new AppUser("user", "secret", "USER"));
+            appUserRepository.save(new AppUser("admin", encoder.encode("password123"), "ADMIN"));
+            appUserRepository.save(new AppUser("user", encoder.encode("secret"), "USER"));
         };
     }
 }

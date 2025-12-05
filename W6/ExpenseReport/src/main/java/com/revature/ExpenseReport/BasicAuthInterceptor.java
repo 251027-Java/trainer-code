@@ -4,6 +4,7 @@ import com.revature.ExpenseReport.Model.AppUser;
 import com.revature.ExpenseReport.Repository.AppUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class BasicAuthInterceptor implements HandlerInterceptor {
     // Fields
     private final AppUserRepository repo;
+    private final PasswordEncoder passwordEncoder;
 
     // Constructor
-    public BasicAuthInterceptor (AppUserRepository repo) {
+    public BasicAuthInterceptor (AppUserRepository repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Methods
@@ -43,8 +46,12 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
                 // check if the user is in the db
                 Optional<AppUser> user = repo.findByUsername(username);
 
-                // check if the password is correct
-                if (user.isPresent() && user.get().getPassword().equals(password)) {
+//                // check if the password is correct
+//                if (user.isPresent() && user.get().getPassword().equals(password)) {
+//                    return true;
+//                }
+                // updated check with hashing check.
+                if(user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())){
                     return true;
                 }
             }
