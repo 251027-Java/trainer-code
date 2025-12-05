@@ -9,7 +9,7 @@ import java.util.List;
 public interface ExpenseRepository extends JpaRepository<Expense, String> {
 //    Expense findById(String id);
      //@Query("SELECT * FROM expenses WHERE expenseMerchant = merchant")
-    List<Expense> findByExpenseMerchant(String merchant);
+    List<Expense> findByExpenseMerchantContainingIgnoreCase(String merchant);
 
 
 }
