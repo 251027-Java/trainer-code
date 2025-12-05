@@ -10,15 +10,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.revature.ExpenseReport.JwtUtil;
 import com.revature.ExpenseReport.Model.AppUser;
 import com.revature.ExpenseReport.Repository.AppUserRepository;
 
-import io.jsonwebtoken.security.AuthRequest;
-import io.jsonwebtoken.security.AuthResponse;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
+// Controller Class
 @RestController
-@RequestMapping("/auth")
-class AuthController {
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    // Auth Records
+    public record AuthRequest(String username, String password){}
+    public record AuthResponse(String token){}
+
+
     // Fields
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -35,12 +44,12 @@ class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request){
         // does the user exist?
-        Optional<AppUser> user = appUserRepository.findByUsername(request.getUsername());
+        Optional<AppUser> user = appUserRepository.findByUsername(request.username());
         if(user.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         // if they do, does the password match?
-        if(!passwordEncoder.matches(request.getPassword(), user.get().getPassword())){
+        if(!passwordEncoder.matches(request.password(), user.get().getPassword())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password");
         }
         // if they do, generate a token
