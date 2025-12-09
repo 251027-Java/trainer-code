@@ -91,25 +91,44 @@
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
+<<<<<<< HEAD
+
+<!-- JWT Support -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.6</version>
+=======
 <!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.12.5</version>
+>>>>>>> a8995cbd32d8eafeddd4c74303bbeb2c95eaec92
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
+<<<<<<< HEAD
+			<version>0.12.6</version>
+=======
 			<version>0.12.5</version>
+>>>>>>> a8995cbd32d8eafeddd4c74303bbeb2c95eaec92
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
+<<<<<<< HEAD
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
+=======
 			<version>0.12.5</version>
 			<scope>runtime</scope>
 		</dependency>
 
+>>>>>>> a8995cbd32d8eafeddd4c74303bbeb2c95eaec92
 	</dependencies>
 	<build>
 		<plugins>
