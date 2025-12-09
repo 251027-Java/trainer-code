@@ -70,6 +70,7 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+    }
 
         @Test
         public void deleteExpense_HappyPath() {
@@ -84,7 +85,7 @@ public class ExpenseServiceTests {
                     .deleteById(id);
         }
 
-    }
+
 
     @Test
     void happyPath_delete_deletesTheId() {
