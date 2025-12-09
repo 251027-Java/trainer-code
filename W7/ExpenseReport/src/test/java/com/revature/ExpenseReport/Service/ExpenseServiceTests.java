@@ -156,6 +156,7 @@ public class ExpenseServiceTests {
         // Assert
         assertThat(actual).isEqualTo(updateDto);
     }
+  
     @Test
     void deleteExpense_HappyPath() {
         // Arrange
@@ -173,8 +174,8 @@ public class ExpenseServiceTests {
         String id = "somerandomid";
 
         service.delete(id);
-        
-        verify(repo, times(1)).deleteById(id);
+
+        Mockito.verify(repo, Mockito.times(1)).deleteById(id);
     }
 
     /*
@@ -215,7 +216,7 @@ public class ExpenseServiceTests {
                 .isEqualTo(expectedDTOs);
 
         //Verify that the service method correctly called the repository exactly once with the expected merchant name.
-        verify(repo, Mockito.times(1)).findByExpenseMerchant(testMerchant);
+        Mockito.verify(repo, Mockito.times(1)).findByExpenseMerchant(testMerchant);
     }
 
     @Test
@@ -224,8 +225,16 @@ public class ExpenseServiceTests {
         // prep the value that should be in the db
         String id = "thisIsTheId";
         LocalDate date = LocalDate.now();
-        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Walmart" );
-        savedExpense.setId(id);
+        Expense savedExpense1 = new Expense(date, new BigDecimal("50.00"), "Video Games");
+        Expense savedExpense2 = new Expense(date, new BigDecimal("99.99"), "Walmart");
+        Expense savedExpense3 = new Expense(date, new BigDecimal("2000.89"), "Walmart");
+        savedExpense1.setId("expense-1");
+        savedExpense2.setId("expense-2");
+        savedExpense3.setId("expense-3");
+
+        List<Expense> walmartExpenses = new ArrayList<>();
+        walmartExpenses.add(savedExpense2);
+        walmartExpenses.add(savedExpense3);
 
         // prep our update DTO and expected value to compare
         ExpenseDTO updateDTO = new ExpenseDTO(id, date.plusDays(1), new BigDecimal("75.00"), "Whole Foods");
@@ -265,13 +274,7 @@ public class ExpenseServiceTests {
         verify(repo, times(1)).deleteById(id);
     }
 
-    /*
-    public List<ExpenseDTO> searchByExpenseMerchant(String merchant) {
-        return repository.findByExpenseMerchant(merchant).stream().map(this::ExpenseToDto).toList();
-    }
-     */
-
-    @Test
+  
     void happyPath_searchByExpenseMerchant_ShouldReturnListOfExpenseDTOs() {
         //Arrange
         String testMerchant = "Starbucks";
@@ -304,6 +307,11 @@ public class ExpenseServiceTests {
         //Verify that the service method correctly called the repository exactly once with the expected merchant name.
         verify(repo, Mockito.times(1)).findByExpenseMerchant(testMerchant);
     }
+    /*
+    public List<ExpenseDTO> searchByExpenseMerchant(String merchant) {
+        return repository.findByExpenseMerchant(merchant).stream().map(this::ExpenseToDto).toList();
+    }
+    */
 
     // public ExpenseDTO update(String id, ExpenseDTO dto) {
     //     Expense expense = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -391,32 +399,24 @@ public class ExpenseServiceTests {
   
     void happyPath_searchExpensesByMerchant_returnsExpenseDTOList() {
         // Arrange
-        // prep the value that should be in the db
         LocalDate date = LocalDate.now();
-        Expense savedExpense1 = new Expense(date, new BigDecimal("50.00"), "Video Games" );
-        Expense savedExpense2 = new Expense(date, new BigDecimal("99.99"), "Walmart");
-        Expense savedExpense3 = new Expense(date, new BigDecimal("2000.89"), "Walmart");
-        savedExpense1.setId("expense-1");
-        savedExpense2.setId("expense-2");
-        savedExpense3.setId("expense-3");
+        String id = "TestId";
+        Expense createdExpense = new Expense(date, new BigDecimal("18.57"), "Starbucks");
+        createdExpense.setId(id);
 
-        List<Expense> walmartExpenses = new ArrayList<>();
-        walmartExpenses.add(savedExpense2);
-        walmartExpenses.add(savedExpense3);
+        ExpenseWOIDDTO input = new ExpenseWOIDDTO(createdExpense.getDate(),
+                createdExpense.getValue(), createdExpense.getMerchant());
 
-        // prep our expected value to compare with for the assert
-        List<ExpenseDTO> expected = new ArrayList<>();
-        expected.add(new ExpenseDTO("expense-2", date, new BigDecimal("99.99"), "Walmart"));
-        expected.add(new ExpenseDTO("expense-3", date, new BigDecimal("2000.89"), "Walmart"));
+        // What I expect to get as result
+        ExpenseDTO expected = new ExpenseDTO(id, date, new BigDecimal("18.57"),
+                "Starbucks");
 
-        // "put" the fake entry in the db
-        when(repo.findByExpenseMerchant("Walmart")).thenReturn(walmartExpenses);
+        when(repo.save(any())).thenReturn(createdExpense);
 
-        // ACT
-        List<ExpenseDTO> actual = service.searchByExpenseMerchant("Walmart");
+        // Act
+        ExpenseDTO actual = service.create(input);
 
         // Assert
-        // compare expected to actual
         assertThat(actual).isEqualTo(expected);
     }
 //Create an Expense Test

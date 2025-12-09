@@ -22,12 +22,8 @@ Beyond just "retrieving" and "sending" data, what are the technical differences 
 #### PUT vs. PATCH
 Both of these HTTP methods are used to update resources. What is the semantic difference between them? Which one is intended for a partial update versus a complete replacement?
 
-**PUT completely replaces the resource with the user input, whereas PATCH partially updates the data with some new values.**
-
 ### HTTP Headers
 What is the purpose of the Content-Type header in a request? How is it different from the Accept header?
-
-****
 
 ### Status Codes
 
