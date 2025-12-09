@@ -1,31 +1,27 @@
 package com.revature.ExpenseReport.Service;
 
 import com.revature.ExpenseReport.Controller.ExpenseDTO;
-import com.revature.ExpenseReport.Controller.ReportDTO;
-import com.revature.ExpenseReport.Controller.ExpenseWOIDDTO;
 import com.revature.ExpenseReport.Model.Expense;
-import com.revature.ExpenseReport.Model.Report;
 import com.revature.ExpenseReport.Repository.ExpenseRepository;
-import com.revature.ExpenseReport.Repository.ReportRepository;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.assertNull;
+
+
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceTests {
@@ -33,12 +29,6 @@ public class ExpenseServiceTests {
     // Fields
     @Mock
     private ExpenseRepository repo;
-
-    @Mock
-    private ReportRepository reportRepo;
-    
-    @InjectMocks
-    private ReportService reportService;
 
     @InjectMocks
     private ExpenseService service;
@@ -53,13 +43,13 @@ public class ExpenseServiceTests {
     // assert - the final check to pass or fail
 
     /*
-     * public ExpenseDTO getById(String id) {
-     * 
-     * Optional<Expense> res = repository.findById(id);
-     * 
-     * return (res.isEmpty()) ? null : ExpenseToDto(res.get());
-     * }
-     */
+    public ExpenseDTO getById(String id) {
+
+        Optional<Expense> res = repository.findById(id);
+
+        return (res.isEmpty()) ? null : ExpenseToDto(res.get());
+    }
+    */
     @Test
     void happyPath_getExpenseById_returnsExpenseDTO() {
         // Arrange
@@ -83,34 +73,6 @@ public class ExpenseServiceTests {
         assertThat(actual).isEqualTo(expected);
     }
 
-    @Test
-    void happyPath_delete_returnsNull(){
-        String id = "thisIsTheId";
-        LocalDate date = LocalDate.now();
-        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Video Games" );
-        savedExpense.setId(id);
-
-        when(repo.findById(id)).thenReturn(Optional.of(savedExpense), Optional.empty());
-
-        service.delete(id);
-
-        ExpenseDTO expected = service.getById(id);
-
-        assertNull(expected);
-    }
-
-    @Test
-    public void deleteExpense_HappyPath() {
-        // Arrange
-        Mockito.doNothing().when(expenseRepository).deleteById(id);
-
-        // ACT
-        expenseService.deleteExpense(id);
-
-        // Assert
-        Mockito.verify(expenseRepository, Mockito.times(1))
-                .deleteById(id);
-    }
 
     @Test
     void happyPath_delete_deletesTheId() {
@@ -163,92 +125,6 @@ public class ExpenseServiceTests {
     }
 
     @Test
-    void happyPath_updateExpense_returnsUpdatedExpenseDTO() {
-        // Arrange
-        // prep the value that should be in the db
-        String id = "thisIsTheId";
-        LocalDate date = LocalDate.now();
-        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Walmart" );
-        savedExpense.setId(id);
-
-        // prep our update DTO and expected value to compare
-        ExpenseDTO updateDTO = new ExpenseDTO(id, date.plusDays(1), new BigDecimal("75.00"), "Whole Foods");
-        ExpenseDTO expected = new ExpenseDTO(id, date.plusDays(1), new BigDecimal("75.00"), "Whole Foods");
-
-        // "put" the fake entry in the db
-        when(repo.findById(id)).thenReturn(Optional.of(savedExpense));
-        when(repo.save(savedExpense)).thenReturn(savedExpense);
-
-        // ACT
-        List<ExpenseDTO> actual = service.searchByExpenseMerchant("Walmart");
-
-        // Assert
-        // compare expected to actual
-        assertThat(actual).isEqualTo(expected);
-
-    }
-
-    /*
-    public List<ExpenseDTO> searchByExpenseMerchant(String merchant) {
-        return repository.findByExpenseMerchant(merchant).stream().map(this::ExpenseToDto).toList();
-    }
-     */
-
-
-  
-    @Test
-    void updateReport_returnsReportDTO(){
-
-        // Arrange (used for expenses)
-        LocalDate date = LocalDate.now();
-        String id1 = "1";
-        String id2 = "2";
-
-        // creating list of expenses for the report
-        Expense e1 = new Expense(date, new BigDecimal("67.41"), "game stop");
-        e1.setId(id1);
-        ExpenseDTO dto1 = new ExpenseDTO(id1, date, new BigDecimal("67.41"), "game stop");
-
-        Expense e2 = new Expense(date, new BigDecimal("1000.00"), "Whataburger");
-        e2.setId(id2);
-        ExpenseDTO dto2 = new ExpenseDTO(id2, date, new BigDecimal("1000.00"), "Whataburger");
-
-        // Create existing report
-        String reportId = "1";
-        Report existingReport = new Report("Old Title", "Pending");
-        existingReport.setReportId(reportId);
-        
-        // Put expenses in the report
-        e1.setReport(existingReport);
-        e2.setReport(existingReport);
-        existingReport.getReportExpenses().add(e1);
-        existingReport.getReportExpenses().add(e2);
-        
-        // Create updated report
-        Report updatedReport = new Report("New Title", "Approved");
-        updatedReport.setReportId(reportId);
-        updatedReport.getReportExpenses().add(e1);
-        updatedReport.getReportExpenses().add(e2);
-        
-        // Create DTO with updated values to pass to update method
-        ReportDTO updateDTO = new ReportDTO(reportId, "New Title", "Approved", List.of(dto1, dto2));
-        
-        // Expected
-        ReportDTO expected = new ReportDTO(reportId, "New Title", "Approved", List.of(dto1, dto2));
-        
-        // Mock repository calls
-        when(reportRepo.findById(reportId)).thenReturn(Optional.of(existingReport));
-        when(reportRepo.save(existingReport)).thenReturn(updatedReport);
-        
-        // Act
-        ReportDTO actual = reportService.update(reportId, updateDTO);
-        
-        // Assert
-        assertThat(actual).isEqualTo(expected);
-    }
-
-
-    @Test
     void happyPath_searchExpensesByMerchant_returnsExpenseDTOList() {
         // Arrange
         // prep the value that should be in the db
@@ -278,10 +154,11 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+
     }
+
+
 }
-
-
 
 
 
