@@ -31,10 +31,10 @@ public class ExpenseService {
     }
 
     public List<ExpenseDTO> searchByExpenseMerchant(String merchant) {
-        return repository.findByExpenseMerchantContainingIgnoreCase(merchant).stream().map(this::ExpenseToDto).toList();
+        return repository.findByExpenseMerchant(merchant).stream().map(this::ExpenseToDto).toList();
     }
 
-    public ExpenseDTO createExpense ( ExpenseWOIDDTO dto) {
+    public ExpenseDTO create( ExpenseWOIDDTO dto) {
         Expense entity = new Expense(dto.expenseDate(), dto.expenseValue(), dto.expenseMerchant());
         return ExpenseToDto(repository.save(entity));
     }
@@ -47,7 +47,7 @@ public class ExpenseService {
     }
 
     // Update
-    public ExpenseDTO updateExpense (String id, ExpenseWOIDDTO dto) {
+    public ExpenseDTO update(String id, ExpenseDTO dto) {
         Expense expense = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         expense.setDate(dto.expenseDate());
@@ -58,11 +58,7 @@ public class ExpenseService {
     }
 
     // Delete
-    public void deleteExpense (String id) {
-        if(!repository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
+    public void delete(String id) {
         repository.deleteById(id);
     }
 
