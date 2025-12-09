@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -65,6 +66,24 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void happyPath_updateExpense_returnsUpdatedExpenseDTO() {
+        // Arrange
+        String id = "expense-123";
+        LocalDate date = LocalDate.of(2024, 2, 20);
+        Expense existingExpense = new Expense(LocalDate.now(), new BigDecimal("50.00"), "Old");
+        existingExpense.setId(id);
+        Expense updatedExpense = new Expense(date, new BigDecimal("150.75"), "Target");
+        updatedExpense.setId(id);
+        ExpenseDTO updateDto = new ExpenseDTO(id, date, new BigDecimal("150.75"), "Target");
+        when(repo.findById(id)).thenReturn(Optional.of(existingExpense));
+        when(repo.save(any(Expense.class))).thenReturn(updatedExpense);
+        // Act
+        ExpenseDTO actual = service.update(id, updateDto);
+        // Assert
+        assertThat(actual).isEqualTo(updateDto);
     }
 }
 
