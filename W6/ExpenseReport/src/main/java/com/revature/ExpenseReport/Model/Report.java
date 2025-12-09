@@ -14,7 +14,8 @@ import java.util.List;
 public class Report {
 
     // Fields
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private String reportId;
     private String reportTitle;
     private String reportStatus;
@@ -23,10 +24,41 @@ public class Report {
     private List<Expense> reportExpenses = new ArrayList<>();
 
     // Constructor
-    public Report (String title, String status) {
+    public Report(String title, String status) {
         this.reportTitle = title;
         this.reportStatus = status;
     }
 
     // Methods
+    public String getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(String reportId) {
+        this.reportId = reportId;
+    }
+
+    public String getReportTitle() {
+        return reportTitle;
+    }
+
+    public void setReportTitle(String reportTitle) {
+        this.reportTitle = reportTitle;
+    }
+
+    public String getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(String reportStatus) {
+        this.reportStatus = reportStatus;
+    }
+
+    public List<Expense> getReportExpenses() {
+        return reportExpenses;
+    }
+
+    public void setReportExpenses(List<Expense> reportExpenses) {
+        this.reportExpenses = reportExpenses;
+    }
 }
