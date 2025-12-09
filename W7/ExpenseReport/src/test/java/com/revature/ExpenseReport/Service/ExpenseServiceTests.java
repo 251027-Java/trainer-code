@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -31,10 +31,10 @@ public class ExpenseServiceTests {
 
     // Methods
 
-        // Triple A
-        // arrange - prepping any resources/objects we need to run our test
-        // act - the action/function of executing the code/logic we're testing
-        // assert - the final check to pass or fail
+    // Triple A
+    // arrange - prepping any resources/objects we need to run our test
+    // act - the action/function of executing the code/logic we're testing
+    // assert - the final check to pass or fail
 
     /*
     public ExpenseDTO getById(String id) {
@@ -50,7 +50,7 @@ public class ExpenseServiceTests {
         // prep the value that should be in the db
         String id = "thisIsTheId";
         LocalDate date = LocalDate.now();
-        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Video Games" );
+        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Video Games");
         savedExpense.setId(id);
 
         // prep our expected value to compare with for the assert
@@ -79,6 +79,15 @@ public class ExpenseServiceTests {
                     .deleteById(id);
         }
 
+    }
+
+    @Test
+    void happyPath_delete_deletesTheId() {
+        String id = "somerandomid";
+
+        service.delete(id);
+        
+        verify(repo, times(1)).deleteById(id);
     }
 }
 
