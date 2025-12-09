@@ -20,7 +20,7 @@
       }
       .boxExample {
         width: 200px;
-        height: 20px; /* width and height set the size of the content box */
+        height: 100px; /* width and height set the size of the content box */
         padding: 5px 1px 8px 20px; /* set padding to 5 pixels on every side */
         border: 2px solid green; /* set the border on every side to be 2px wide, solid line, and green background color */
         margin-top: 10px; /* set the margin on the top to be 10 pixels */
@@ -372,7 +372,7 @@
         <pre>
           <code>.boxExample {
             width: 200px;
-            height: 20px; /* width and height set the size of the content box */
+            height: 100px; /* width and height set the size of the content box */
             padding: 5px 1px 8px 20px; /* TRBL - top, right, bottom, left - respectively */
             border: 2px solid green; /* set the border on every side to be 2px wide, solid line, and green background color */
             /* alternatively, we could use apply these styles individually:
@@ -388,7 +388,12 @@
         <p>
           When we apply this style to an element, here's what we get:
         </p>
-        <div class="boxExample">This is the content</div>
+        <div class="boxExample">This is the content
+          <ul>
+            <li>I have more content here.</li>
+            <li>And a bit more.</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -427,7 +432,7 @@
         <li>
           Colors
           <ul>
-            <li>keywords - like <span style="color: red">red</span>, <span style="color: blue">blue</span>, even specific ones like <span style="color: aquamarine; background-color: grey">aquamarine</span></li>
+            <li>keywords - like <span style="color: red">red</span>, <span style="color: blue">blue</span>, even specific ones like <span style="color: aquamarine; background-color:cadetblue">aquamarine</span></li>
             <li>hex value - <code>#</code> sign followed by six hex numbers (0-F) with each pair representing rgb values for up to 256 different values of each</li>
             <li>rgb(a) - a function to specify values for red, green, and blue channels, use like: <code>rgb(224,176,255)</code>. Optional alpha (transparency) value.</li>
             <li>hsl(a) - a function to specify hue, saturation, and lightness values to define a color, use like: <code>hsl(240,100%,50%)</code>. Optional alpha (transparency) value.</li>

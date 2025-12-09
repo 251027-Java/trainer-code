@@ -1,5 +1,9 @@
 package com.revature.ExpenseReport.Service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+
 import com.revature.ExpenseReport.Controller.ReportDTO;
 import com.revature.ExpenseReport.Model.Report;
 import com.revature.ExpenseReport.Repository.ReportRepository;
@@ -8,7 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.revature.ExpenseReport.Repository.ReportRepository;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -25,6 +32,20 @@ public class ReportServiceTests {
     private ReportService service;
 
 
+    @Test
+    public void testGetReportByIdInvalidId() {
+        String id = "1";
+        when(repo.findById(id)).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid ID"));
+
+        var exception = assertThrows(
+            ResponseStatusException.class, 
+            () -> service.getById(id)
+        );
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+
+    }
+  
     // Test for service.create()
     @Test
     public void happyPath_createReport_returnsReportDTO() {
