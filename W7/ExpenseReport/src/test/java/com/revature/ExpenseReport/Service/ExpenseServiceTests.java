@@ -151,16 +151,24 @@ public class ExpenseServiceTests {
         //Arrange
         String id = "thisIsTheId";
         LocalDate date = LocalDate.now();
+
+        //Create "saved expense"
         Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Walmart");
         savedExpense.setId(id);
+
+        //Create expected ExpenseDTO after update
         ExpenseDTO expected = new ExpenseDTO(id, date, new BigDecimal("100.00"), "Amazon");
+
+        //Create expense that is used to update the saved expense
         Expense updated = new Expense(date, new BigDecimal("100.00"), "Amazon");
         updated.setId(id);
 
+        //"put" saved expense in the db
         when(repo.findById(id)).thenReturn(Optional.of(savedExpense));
-        when(repo.save(savedExpense)).thenReturn(updated);
+        when(repo.save(savedExpense)).thenReturn(savedExpense);
 
         // Act
+        // Call the service update method
         ExpenseDTO actual = service.update(id, expected);
 
         // Assert
