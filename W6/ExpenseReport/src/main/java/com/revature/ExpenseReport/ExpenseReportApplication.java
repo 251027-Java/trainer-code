@@ -29,11 +29,9 @@ public class ExpenseReportApplication {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean // Bean is a single method that is run after the application is started
-    CommandLineRunner seedData (ExpenseRepository expenseRepository,
-                                ReportRepository reportRepository,
-                                AppUserRepository appUserRepository,
-                                PasswordEncoder encoder) {
+    CommandLineRunner seedData (ExpenseRepository expenseRepository, ReportRepository reportRepository, AppUserRepository appUserRepository, PasswordEncoder encoder) {
         return args -> {
 
             // Report seed
@@ -43,14 +41,13 @@ public class ExpenseReportApplication {
             reportRepository.save(r2);
 
             // Expenses seed
-            var e1 = new Expense(LocalDate.now(), new BigDecimal("59.99"), "Walmart");
+            var e1 = new Expense(LocalDate.now(), new BigDecimal(59.99), "Walmart");
             e1.setReport(r1);
 
-            var e2 = new Expense(LocalDate.now().minusDays(1), new BigDecimal("14.75"), "Starbucks");
+            var e2 = new Expense(LocalDate.now().minusDays(1), new BigDecimal(14.75), "Starbucks");
             e2.setReport(r1);
 
-            var e3 = new Expense(LocalDate.now().minusDays(25), new BigDecimal("99.88")
-                    , "Buffalo Wild Wings");
+            var e3 = new Expense(LocalDate.now().minusDays(25), new BigDecimal(99.88), "Buffalo Wild Wings");
             e3.setReport(r2);
 
             expenseRepository.saveAll(List.of(e1, e2, e3));
