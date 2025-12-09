@@ -84,7 +84,6 @@ public class ExpenseServiceTests {
         ExpenseDTO expected = new ExpenseDTO(id, date, new BigDecimal("18.57"),
                 "Starbucks");
 
-        // TODO: Look at this
         when(repo.save(any())).thenReturn(createdExpense);
 
         // Act
