@@ -1,6 +1,7 @@
 package com.revature.ExpenseReport.Service;
 
 import com.revature.ExpenseReport.Controller.ExpenseDTO;
+import com.revature.ExpenseReport.Controller.ExpenseWOIDDTO;
 import com.revature.ExpenseReport.Model.Expense;
 import com.revature.ExpenseReport.Repository.ExpenseRepository;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -61,6 +63,32 @@ public class ExpenseServiceTests {
 
         // ACT
         ExpenseDTO actual = service.getById(id);
+
+        // Assert
+        // compare expected to actual
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void happyPath_createExpense_returnsExpenseDTO() {
+        // Arrange
+        // prep the input DTO
+        LocalDate date = LocalDate.now();
+        ExpenseWOIDDTO testDTO = new ExpenseWOIDDTO(date, new BigDecimal("67.70"), "Market Street");
+
+        // prep the value that will be saved and returned from the db
+        String id = "anothertestID";
+        Expense savedTestExpense = new Expense(date, new BigDecimal("67.70"), "Market Street");
+        savedTestExpense.setId(id);
+
+        // prep our expected value to compare with for the assert
+        ExpenseDTO expected = new ExpenseDTO(id, date, new BigDecimal("67.70"), "Market Street");
+
+        // "save" the fake entry in the db
+        when(repo.save(any(Expense.class))).thenReturn(savedTestExpense);
+
+        // ACT
+        ExpenseDTO actual = service.create(testDTO);
 
         // Assert
         // compare expected to actual
