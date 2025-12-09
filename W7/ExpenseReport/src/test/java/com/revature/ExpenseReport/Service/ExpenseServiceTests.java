@@ -1,6 +1,7 @@
 package com.revature.ExpenseReport.Service;
 
 import com.revature.ExpenseReport.Controller.ExpenseDTO;
+import com.revature.ExpenseReport.Controller.ExpenseWOIDDTO;
 import com.revature.ExpenseReport.Model.Expense;
 import com.revature.ExpenseReport.Repository.ExpenseRepository;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -65,6 +67,42 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void happyPath_updateExpense_correctlyUpdatesAndSaves() {
+
+        // Arrange
+        String id = "thisIsTheUpdateId";
+        LocalDate date = LocalDate.now();
+        Expense originalExpense = new Expense(date, new BigDecimal("50.00"), "Video Games");
+        originalExpense.setId(id);
+
+        //DTO that will come with update (is passed, should update by id)
+        ExpenseDTO updateDto = new ExpenseDTO(id, date, new BigDecimal("75.00"), "Movies");
+
+
+        // Expected DTO object to be returned (Must add Id)
+        Expense expectedSavedExpense = new Expense(date, new BigDecimal("75.00"), "Movies");
+        expectedSavedExpense.setId(id);
+        ExpenseDTO expectedOutput = new ExpenseDTO(id, date, new BigDecimal("75.00"), "Movies");
+
+        // Two repo calls are done, define them and what they should return after.
+
+        // Repo can find original expense record
+        when(repo.findById(id)).thenReturn(Optional.of(originalExpense));
+
+        // When saved called on any expense object, return the expected savedExpense.
+        when(repo.save(any(Expense.class))).thenReturn(expectedSavedExpense);
+
+
+        // ACT
+        // Do updated
+        ExpenseDTO updateActual = service.update(id, updateDto);
+
+        // Assert
+        // Verify the returned DTO matches the expected Expense
+        assertThat(updateActual).isEqualTo(expectedOutput);
     }
 }
 
