@@ -11,6 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,6 +63,38 @@ public class ExpenseServiceTests {
 
         // ACT
         ExpenseDTO actual = service.getById(id);
+
+        // Assert
+        // compare expected to actual
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void happyPath_searchExpensesByMerchant_returnsExpenseDTOList() {
+        // Arrange
+        // prep the value that should be in the db
+        LocalDate date = LocalDate.now();
+        Expense savedExpense1 = new Expense(date, new BigDecimal("50.00"), "Video Games" );
+        Expense savedExpense2 = new Expense(date, new BigDecimal("99.99"), "Walmart");
+        Expense savedExpense3 = new Expense(date, new BigDecimal("2000.89"), "Walmart");
+        savedExpense1.setId("expense-1");
+        savedExpense2.setId("expense-2");
+        savedExpense3.setId("expense-3");
+
+        List<Expense> walmartExpenses = new ArrayList<>();
+        walmartExpenses.add(savedExpense2);
+        walmartExpenses.add(savedExpense3);
+
+        // prep our expected value to compare with for the assert
+        List<ExpenseDTO> expected = new ArrayList<>();
+        expected.add(new ExpenseDTO("expense-2", date, new BigDecimal("99.99"), "Walmart"));
+        expected.add(new ExpenseDTO("expense-3", date, new BigDecimal("2000.89"), "Walmart"));
+
+        // "put" the fake entry in the db
+        when(repo.findByExpenseMerchant("Walmart")).thenReturn(walmartExpenses);
+
+        // ACT
+        List<ExpenseDTO> actual = service.searchByExpenseMerchant("Walmart");
 
         // Assert
         // compare expected to actual
