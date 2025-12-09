@@ -14,15 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-
-import static org.mockito.Mockito.*;
-
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -45,13 +42,13 @@ public class ExpenseServiceTests {
     // assert - the final check to pass or fail
 
     /*
-    public ExpenseDTO getById(String id) {
-
-        Optional<Expense> res = repository.findById(id);
-
-        return (res.isEmpty()) ? null : ExpenseToDto(res.get());
-    }
-    */
+     * public ExpenseDTO getById(String id) {
+     * 
+     * Optional<Expense> res = repository.findById(id);
+     * 
+     * return (res.isEmpty()) ? null : ExpenseToDto(res.get());
+     * }
+     */
     @Test
     void happyPath_getExpenseById_returnsExpenseDTO() {
         // Arrange
