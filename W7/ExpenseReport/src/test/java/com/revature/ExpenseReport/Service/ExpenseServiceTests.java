@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.beans.Transient;
 import java.math.BigDecimal;
@@ -83,6 +84,42 @@ public class ExpenseServiceTests {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @Test
+    void happyPath_updateExpense_correctlyUpdatesAndSaves() {
+
+        // Arrange
+        String id = "thisIsTheUpdateId";
+        LocalDate date = LocalDate.now();
+        Expense originalExpense = new Expense(date, new BigDecimal("50.00"), "Video Games");
+        originalExpense.setId(id);
+
+        //DTO that will come with update (is passed, should update by id)
+        ExpenseDTO updateDto = new ExpenseDTO(id, date, new BigDecimal("75.00"), "Movies");
+
+
+        // Expected DTO object to be returned (Must add Id)
+        Expense expectedSavedExpense = new Expense(date, new BigDecimal("75.00"), "Movies");
+        expectedSavedExpense.setId(id);
+        ExpenseDTO expectedOutput = new ExpenseDTO(id, date, new BigDecimal("75.00"), "Movies");
+
+        // Two repo calls are done, define them and what they should return after.
+
+        // Repo can find original expense record
+        when(repo.findById(id)).thenReturn(Optional.of(originalExpense));
+
+        // When saved called on any expense object, return the expected savedExpense.
+        when(repo.save(any(Expense.class))).thenReturn(expectedSavedExpense);
+
+
+        // ACT
+        // Do updated
+        ExpenseDTO updateActual = service.update(id, updateDto);
+
+        // Assert
+        // Verify the returned DTO matches the expected Expense
+        assertThat(updateActual).isEqualTo(expectedOutput);
+    }
+  
     @Test
     void happyPath_delete_returnsNull(){
         String id = "thisIsTheId";
@@ -186,19 +223,19 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
     }
-  
-   @Test
-        public void deleteExpense_HappyPath() {
-            // Arrange
-            Mockito.doNothing().when(expenseRepository).deleteById(id);
 
-            // ACT
-            expenseService.deleteExpense(id);
+    @Test
+    public void deleteExpense_HappyPath() {
+        // Arrange
+        Mockito.doNothing().when(expenseRepository).deleteById(id);
 
-            // Assert
-            Mockito.verify(expenseRepository, Mockito.times(1))
-                    .deleteById(id);
-        }
+        // ACT
+        expenseService.deleteExpense(id);
+
+        // Assert
+        Mockito.verify(expenseRepository, Mockito.times(1))
+                .deleteById(id);
+    }
 
     @Test
     void happyPath_delete_deletesTheId() {
