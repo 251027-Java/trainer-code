@@ -87,12 +87,12 @@ public class ExpenseServiceTests {
         // "save" the fake entry in the db
         when(repo.save(any(Expense.class))).thenReturn(savedTestExpense);
 
-        // ACT
+        // ACT 
         ExpenseDTO actual = service.create(testDTO);
 
         // Assert
         // compare expected to actual
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected); 
     }
 }
 
