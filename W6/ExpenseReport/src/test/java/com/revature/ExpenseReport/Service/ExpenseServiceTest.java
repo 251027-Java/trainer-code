@@ -19,7 +19,7 @@ public class ExpenseServiceTest{
 
         //Arrange - prepping any resources/objects we need to run our test
 
-        //Act- the function /action of executing the code/logic were testing
+        //Act- the function /action of executing the code/logic we're testing
 
         //Assert - the final check to pass or fail
 }
