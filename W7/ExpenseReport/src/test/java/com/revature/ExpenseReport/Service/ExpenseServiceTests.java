@@ -65,6 +65,20 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+
+        @Test
+        public void deleteExpense_HappyPath() {
+            // Arrange
+            Mockito.doNothing().when(expenseRepository).deleteById(id);
+
+            // ACT
+            expenseService.deleteExpense(id);
+
+            // Assert
+            Mockito.verify(expenseRepository, Mockito.times(1))
+                    .deleteById(id);
+        }
+
     }
 }
 
