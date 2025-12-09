@@ -3,6 +3,7 @@ package com.revature.ExpenseReport.Service;
 import com.revature.ExpenseReport.Controller.ExpenseDTO;
 import com.revature.ExpenseReport.Model.Expense;
 import com.revature.ExpenseReport.Repository.ExpenseRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,13 +14,20 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceTests {
-
+    private Expense expense1;
+    @BeforeEach
+    void setUp() {
+        expense1 = new Expense(LocalDate.of(2025, 12, 9), new BigDecimal("50.00"), "Walmart");
+        expense1.setId("1");
+    }
     // Fields
     @Mock
     private ExpenseRepository repo;
@@ -66,6 +74,18 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    void happyPath_updateidDTO_returnExpenseDTO() {
+        LocalDate date = LocalDate.now();
+        ExpenseDTO expected = new ExpenseDTO("1", date, new BigDecimal("60.00"), "Costco");
+        when(repo.findById("1")).thenReturn(Optional.of(expense1));
+        when(repo.save(any(Expense.class))).thenReturn(expense1);
+        ExpenseDTO actual = service.update("1",expected);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
 }
 
 
