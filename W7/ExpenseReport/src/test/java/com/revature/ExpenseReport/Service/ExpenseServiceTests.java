@@ -8,10 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,10 +35,10 @@ public class ExpenseServiceTests {
 
     // Methods
 
-        // Triple A
-        // arrange - prepping any resources/objects we need to run our test
-        // act - the action/function of executing the code/logic we're testing
-        // assert - the final check to pass or fail
+    // Triple A
+    // arrange - prepping any resources/objects we need to run our test
+    // act - the action/function of executing the code/logic we're testing
+    // assert - the final check to pass or fail
 
     /*
     public ExpenseDTO getById(String id) {
@@ -67,6 +69,20 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void deleteExpense_HappyPath() {
+        // Arrange
+        String id = "This";
+        Mockito.doNothing().when(repo).deleteById(id);
+
+        // ACT
+        service.delete(id);
+
+        // Assert
+        Mockito.verify(repo, Mockito.times(1))
+                .deleteById(id);
     }
 
     @Test
