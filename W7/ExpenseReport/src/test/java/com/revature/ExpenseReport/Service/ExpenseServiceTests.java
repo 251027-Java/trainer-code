@@ -11,6 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,6 +67,33 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+    }
+
+    //verifies service searches for expenses by merchant. should return only matching expenses as DTOs
+    @Test
+    void searchByExpenseMerchant_returnsMatchingExpenses() {
+        // arrange
+        String merchant = "Walmart";
+        LocalDate date1 = LocalDate.now();
+        LocalDate date2 = LocalDate.now().minusDays(1);
+        
+        Expense expense1 = new Expense(date1, new BigDecimal("100.00"), merchant);
+        expense1.setId("id1");
+        
+        Expense expense2 = new Expense(date2, new BigDecimal("75.50"), merchant);
+        expense2.setId("id2");
+        
+        List<Expense> matchingExpenses = Arrays.asList(expense1, expense2);
+        
+        // configure mock to return expenses matching the merchant
+        when(repo.findByExpenseMerchant(merchant)).thenReturn(matchingExpenses);
+
+        // act
+        List<ExpenseDTO> actual = service.searchByExpenseMerchant(merchant);
+
+        // assert
+        assertThat(actual).hasSize(2);
+        assertThat(actual).allMatch(dto -> dto.expenseMerchant().equals(merchant));
     }
 }
 
