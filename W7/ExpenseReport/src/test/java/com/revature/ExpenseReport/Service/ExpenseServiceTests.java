@@ -66,6 +66,21 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    void sadPath_getExpenseById_returnsNullWhenNotFound() {
+        // Arrange
+        String id = "thisIdDoesNotExist";
+
+        // pretend the db has no entry for this id
+        when(repo.findById(id)).thenReturn(Optional.empty());
+
+        // Act
+        ExpenseDTO actual = service.getById(id);
+
+        // Assert
+        assertThat(actual).isNull();
+    }
 }
 
 
