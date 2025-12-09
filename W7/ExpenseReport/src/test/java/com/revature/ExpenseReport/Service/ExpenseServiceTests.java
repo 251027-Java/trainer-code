@@ -93,6 +93,7 @@ public class ExpenseServiceTests {
         assertThat(actual.get(1).expenseMerchant()).isEqualTo("Wholefoods");
 
         // Completed
+        //test
 
     }
 
