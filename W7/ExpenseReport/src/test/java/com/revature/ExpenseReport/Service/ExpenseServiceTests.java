@@ -127,7 +127,7 @@ public class ExpenseServiceTests {
         when(repo.findByExpenseMerchant(testMerchant)).thenReturn(mockEntities);
 
         //Act
-        List<ExpenseDTO> actualDTOs = service.searchByExpenseMerchant(testMerchant);
+        List<ExpenseDTO> actualDTOs = service.searchByExpenseMerchant(testMerchant); 
 
         //Assert
 
