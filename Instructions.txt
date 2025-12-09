@@ -1,8 +1,0 @@
-cd Pulling-Trainer-Code
-
-git fetch origin
-git checkout origin/main -- W6/ExpenseReport
-
-to get new updates:
-git fetch origin
-git checkout origin/main -- W6/ExpenseReport
