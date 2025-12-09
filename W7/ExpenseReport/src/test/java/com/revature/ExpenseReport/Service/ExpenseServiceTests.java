@@ -1,6 +1,7 @@
 package com.revature.ExpenseReport.Service;
 
 import com.revature.ExpenseReport.Controller.ExpenseDTO;
+import com.revature.ExpenseReport.Controller.ExpenseWOIDDTO;
 import com.revature.ExpenseReport.Model.Expense;
 import com.revature.ExpenseReport.Repository.ExpenseRepository;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -69,7 +71,27 @@ public class ExpenseServiceTests {
 
     @Test
     public void happyPath_createExpense_returnsExpenseDTO() {
+        // Arrange
+        LocalDate date = LocalDate.now();
+        String id = "TestId";
+        Expense createdExpense = new Expense(date, new BigDecimal("18.57"), "Starbucks");
+        createdExpense.setId(id);
 
+        ExpenseWOIDDTO input = new ExpenseWOIDDTO(createdExpense.getDate(),
+                createdExpense.getValue(), createdExpense.getMerchant());
+
+        // What I expect to get as result
+        ExpenseDTO expected = new ExpenseDTO(id, date, new BigDecimal("18.57"),
+                "Starbucks");
+
+        // TODO: Look at this
+        when(repo.save(any())).thenReturn(createdExpense);
+
+        // Act
+        ExpenseDTO actual = service.create(input);
+
+        // Assert
+        assertThat(actual).isEqualTo(expected);
     }
 }
 
