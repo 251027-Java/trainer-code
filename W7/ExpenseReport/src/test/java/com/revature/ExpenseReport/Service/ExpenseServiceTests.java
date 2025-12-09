@@ -19,10 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertNull;
-
-import static org.mockito.Mockito.when;
-
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceTests {
@@ -153,6 +151,27 @@ public class ExpenseServiceTests {
         verify(repo, Mockito.times(1)).findByExpenseMerchant(testMerchant);
     }
 
+    @Test
+    void happyPath_updateExpense_returnsUpdatedExpenseDTO() {
+        // Arrange
+        // prep the value that should be in the db
+        String id = "thisIsTheId";
+        LocalDate date = LocalDate.now();
+        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Walmart" );
+        savedExpense.setId(id);
+
+        // prep our update DTO and expected value to compare
+        ExpenseDTO updateDTO = new ExpenseDTO(id, date.plusDays(1), new BigDecimal("75.00"), "Whole Foods");
+        ExpenseDTO expected = new ExpenseDTO(id, date.plusDays(1), new BigDecimal("75.00"), "Whole Foods");
+
+        // "put" the fake entry in the db
+        when(repo.findById(id)).thenReturn(Optional.of(savedExpense));
+        when(repo.save(savedExpense)).thenReturn(savedExpense);
+
+        // ACT
+        ExpenseDTO actual = service.update(id, updateDTO);
+    }
+  
     @Test
     void happyPath_searchExpensesByMerchant_returnsExpenseDTOList() {
         // Arrange
