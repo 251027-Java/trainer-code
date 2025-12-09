@@ -167,20 +167,23 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
 
-        @Test
-        public void deleteExpense_HappyPath() {
+        @Test//
+        public void deleteExpense_HappyPath() {//
             // Arrange
-            Mockito.doNothing().when(expenseRepository).deleteById(id);
+            // do nothing, and just test the deleteById functionality
+            Mockito.doNothing().when(expenseRepository).deleteById(id);//
 
             // ACT
-            expenseService.deleteExpense(id);
+            // We are calling on the deleteExpense method in the service layer
+            expenseService.deleteExpense(id);//
 
             // Assert
-            Mockito.verify(expenseRepository, Mockito.times(1))
-                    .deleteById(id);
-        }
+            // now verify in our expense repo one time if the function works
+            Mockito.verify(expenseRepository, Mockito.times(1))//
+                    .deleteById(id);//
+        }//
 
-    }
+    }//
 
     @Test
     void happyPath_delete_deletesTheId() {
