@@ -1,10 +1,15 @@
 package com.revature.ExpenseReport.Service;
 
 import com.revature.ExpenseReport.Controller.ExpenseDTO;
+import com.revature.ExpenseReport.Controller.ReportDTO;
 import com.revature.ExpenseReport.Controller.ExpenseWOIDDTO;
 import com.revature.ExpenseReport.Model.Expense;
+import com.revature.ExpenseReport.Model.Report;
 import com.revature.ExpenseReport.Repository.ExpenseRepository;
+import com.revature.ExpenseReport.Repository.ReportRepository;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,6 +33,12 @@ public class ExpenseServiceTests {
     // Fields
     @Mock
     private ExpenseRepository repo;
+
+    @Mock
+    private ReportRepository reportRepo;
+    
+    @InjectMocks
+    private ReportService reportService;
 
     @InjectMocks
     private ExpenseService service;
@@ -169,9 +180,74 @@ public class ExpenseServiceTests {
         when(repo.save(savedExpense)).thenReturn(savedExpense);
 
         // ACT
-        ExpenseDTO actual = service.update(id, updateDTO);
+        List<ExpenseDTO> actual = service.searchByExpenseMerchant("Walmart");
+
+        // Assert
+        // compare expected to actual
+        assertThat(actual).isEqualTo(expected);
+
     }
+
+    /*
+    public List<ExpenseDTO> searchByExpenseMerchant(String merchant) {
+        return repository.findByExpenseMerchant(merchant).stream().map(this::ExpenseToDto).toList();
+    }
+     */
+
+
   
+    @Test
+    void updateReport_returnsReportDTO(){
+
+        // Arrange (used for expenses)
+        LocalDate date = LocalDate.now();
+        String id1 = "1";
+        String id2 = "2";
+
+        // creating list of expenses for the report
+        Expense e1 = new Expense(date, new BigDecimal("67.41"), "game stop");
+        e1.setId(id1);
+        ExpenseDTO dto1 = new ExpenseDTO(id1, date, new BigDecimal("67.41"), "game stop");
+
+        Expense e2 = new Expense(date, new BigDecimal("1000.00"), "Whataburger");
+        e2.setId(id2);
+        ExpenseDTO dto2 = new ExpenseDTO(id2, date, new BigDecimal("1000.00"), "Whataburger");
+
+        // Create existing report
+        String reportId = "1";
+        Report existingReport = new Report("Old Title", "Pending");
+        existingReport.setReportId(reportId);
+        
+        // Put expenses in the report
+        e1.setReport(existingReport);
+        e2.setReport(existingReport);
+        existingReport.getReportExpenses().add(e1);
+        existingReport.getReportExpenses().add(e2);
+        
+        // Create updated report
+        Report updatedReport = new Report("New Title", "Approved");
+        updatedReport.setReportId(reportId);
+        updatedReport.getReportExpenses().add(e1);
+        updatedReport.getReportExpenses().add(e2);
+        
+        // Create DTO with updated values to pass to update method
+        ReportDTO updateDTO = new ReportDTO(reportId, "New Title", "Approved", List.of(dto1, dto2));
+        
+        // Expected
+        ReportDTO expected = new ReportDTO(reportId, "New Title", "Approved", List.of(dto1, dto2));
+        
+        // Mock repository calls
+        when(reportRepo.findById(reportId)).thenReturn(Optional.of(existingReport));
+        when(reportRepo.save(existingReport)).thenReturn(updatedReport);
+        
+        // Act
+        ReportDTO actual = reportService.update(reportId, updateDTO);
+        
+        // Assert
+        assertThat(actual).isEqualTo(expected);
+    }
+
+
     @Test
     void happyPath_searchExpensesByMerchant_returnsExpenseDTOList() {
         // Arrange
