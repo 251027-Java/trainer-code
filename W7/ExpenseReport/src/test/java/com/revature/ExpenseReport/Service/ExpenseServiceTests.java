@@ -247,7 +247,7 @@ public class ExpenseServiceTests {
 
         // "put" the fake entry in the db
         when(repo.findById(id)).thenReturn(Optional.of(savedExpense));
-        // "get" the updated entry from the db
+        // "put" the updated entry in the db
         when(repo.save(any(Expense.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // ACT
