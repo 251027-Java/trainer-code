@@ -1,9 +1,5 @@
 package com.revature.ExpenseReport.Controller;
 
-<<<<<<< HEAD
-public class ReportController {
-
-=======
 import com.revature.ExpenseReport.Service.ReportService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +13,7 @@ public class ReportController {
     private final ReportService service;
 
     // Constructor
-    public ReportController(ReportService service){
+    public ReportController(ReportService service) {
         this.service = service;
     }
 
@@ -48,5 +44,4 @@ public class ReportController {
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
->>>>>>> origin
 }

@@ -4,30 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-<<<<<<< HEAD
 @Entity
 @Table(name = "app_users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username"})
-    }
-=======
-import javax.swing.*;
-
-@Entity
-@Table(
-        name = "app_users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"username"})
-        }
->>>>>>> origin
-)
+        @UniqueConstraint(columnNames = { "username" })
+})
 @Data
 @NoArgsConstructor
 public class AppUser {
-<<<<<<< HEAD
-    //Fields
-=======
+
     // Fields
->>>>>>> origin
     @Id
     @GeneratedValue
     private Long userid;
@@ -37,31 +22,47 @@ public class AppUser {
 
     @Column(nullable = false)
     private String password;
-<<<<<<< HEAD
-    @Column(name = "user_role")
-    private String userrole;
-
-
-    //Constructor
-    public AppUser(String username, String password, String role){
-=======
 
     @Column(name = "user_role")
     private String userrole;
 
     // Constructor
-    public AppUser( String username, String password, String role) {
->>>>>>> origin
+    public AppUser(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.userrole = role;
     }
 
-<<<<<<< HEAD
-    //Methods
-
-
-=======
     // Methods
->>>>>>> origin
+    public Long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Long userid) {
+        this.userid = userid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserrole() {
+        return userrole;
+    }
+
+    public void setUserrole(String userrole) {
+        this.userrole = userrole;
+    }
 }
