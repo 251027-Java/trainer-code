@@ -66,6 +66,11 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    public void happyPath_createExpense_returnsExpenseDTO() {
+
+    }
 }
 
 
