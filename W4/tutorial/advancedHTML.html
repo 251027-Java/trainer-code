@@ -11,15 +11,6 @@
     dynamically changing the appearance of the page according to the size of the window.
     The tag basically tells the browser not to zoom in by default if viewing on a smaller device.
     -->
-    <style>
-      body {
-        color:darkblue;
-      }
-      code {
-        background-color:bisque;
-        color:black;
-      }
-    </style>
     <title>Advanced HTML</title>
   </head>
   <body>
@@ -184,7 +175,7 @@
         </ul>
       </li>
       <li><code>&lt;button&gt;</code> - a user-clickable button</li>
-      <li><code>&lt;select&gt;</code> - a dropdown menu with options specified by the <code>&lt;option&gt;</code> tag</li>
+      <li><code>&lt;select&gt;</code> - a dropdown menu with options specified by the <code>option</code> tag</li>
       <li><code>&lt;textarea&gt;</code> - a multi-lined, resizable text field</li>
       <li><code>&lt;label&gt;</code> - defines a label for an input element</li>
     </ul>
@@ -196,9 +187,8 @@
     <h4>Simple example form</h4>
     <form>
       <div>
-        <label>Enter your first name:
-            <input type="password" name="firstname" placeholder="placeholder text">
-        </label>
+        Enter your first name:
+        <input type="password" name="firstname" placeholder="placeholder text">
       </div>
       <div>
         Date of birth:
@@ -225,12 +215,6 @@
         <input type="checkbox" name="" value="1"> option1
         <input type="checkbox" name="" value="2"> option2
         <input type="checkbox" name="" value="3"> option3
-      </div>
-      <div>
-        Or select select from these choices:
-        <input type="radio" name="choice" value="1"> choice1
-        <input type="radio" name="choice" value="2"> choice2
-        <input type="radio" name="choice" value="3"> choice3
       </div>
       <div>
         <textarea name="textarea" rows="8" cols="80" placeholder="a place for a long block of text"></textarea>
@@ -273,7 +257,7 @@
       <p>
         As you can see, there are <strong>MANY, MANY</strong> HTML tags out there.
         We won't go through all of them, but there is a
-        <a target="_blank" href="https://www.w3schools.com/tags/">comprehensive list on W3Schools</a>.
+        <a href="https://www.w3schools.com/tags/">comprehensive list on W3Schools</a>.
         In fact, that whole website is great for HTML and CSS reference material,
         so go explore it. And when you're ready, let's go to the
         <a href="./introToCSS.html">next page</a>!

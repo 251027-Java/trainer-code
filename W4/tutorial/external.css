@@ -4,9 +4,6 @@ body {
   margin: auto;
   font-family: Helvetica, Arial; /* multiple values! */
 }
-ul { 
-  color: green;
-}
 pre > code {
   background-color: inherit;
 }

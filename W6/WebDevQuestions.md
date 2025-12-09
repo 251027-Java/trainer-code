@@ -5,29 +5,19 @@
 ### Request Lifecycle
 Walk me through the HTTP Lifecycle. What happens step-by-step from the moment a user types a URL into the browser until the page is displayed?
 
-**Since we are using the HTTP protocol, the first step is to look at the type of request the user is sending. Whether its a get, put, delete, or something else. The request will have a head and a body, and if there is any input from the user, that will be sent in the body. Our browser is usually connected to some API or server, which it sends the request to, and then it recieves the response from the server. If the request was successful, the browser can display the response, or it will display some HTTP error code.**
-
 ### Statelessness & Cookies
 HTTP is described as a "stateless" protocol. What does this mean? How do Cookies help bridge this gap to maintain a user's session state?
-
-**A stateless protocol doesn't store any information about the session. As long as that session is running, the data exists, but once the session ends, that data is gone unless it has been saved in some kind of database or if the browser uses Cookies. Cookies allow the client to store session data for some time, so the user won't be immediately logged out of a website as soon as they reload, for example.**
 
 ### HTTP Methods
 
 #### GET vs. POST
 Beyond just "retrieving" and "sending" data, what are the technical differences between GET and POST methods regarding data visibility in the URL, caching behavior, and idempotency?
 
-**Well, as you said, GET retrieves data and POST sends data, but beyond that, GET is idempotent, which means everytime it is run, it will return the same result- the data that's been requested. POST is not idempotent, since it creates a new thing everytime it is run, and changes the database every time it is run. As for the URL, it maybe possible to get your parameter from the URL in a GET request or even to have no parameters at all, since get can either retrieve every part of the data, or get the data that matches a specific id or name. With POST, the input would have to be sent in the body of the request, since it is usually a lot more information.**
-
 #### PUT vs. PATCH
 Both of these HTTP methods are used to update resources. What is the semantic difference between them? Which one is intended for a partial update versus a complete replacement?
 
-**PUT completely replaces the resource with the user input, whereas PATCH partially updates the data with some new values.**
-
 ### HTTP Headers
 What is the purpose of the Content-Type header in a request? How is it different from the Accept header?
-
-****
 
 ### Status Codes
 
