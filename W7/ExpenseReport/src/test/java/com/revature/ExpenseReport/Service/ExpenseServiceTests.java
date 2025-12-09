@@ -185,7 +185,28 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+    }
+  
+   @Test
+        public void deleteExpense_HappyPath() {
+            // Arrange
+            Mockito.doNothing().when(expenseRepository).deleteById(id);
 
+            // ACT
+            expenseService.deleteExpense(id);
+
+            // Assert
+            Mockito.verify(expenseRepository, Mockito.times(1))
+                    .deleteById(id);
+        }
+
+    @Test
+    void happyPath_delete_deletesTheId() {
+        String id = "somerandomid";
+
+        service.delete(id);
+        
+        verify(repo, times(1)).deleteById(id);
     }
 
     /*
@@ -194,61 +215,55 @@ public class ExpenseServiceTests {
     }
      */
 
-
-  
     @Test
-    void updateReport_returnsReportDTO(){
-
-        // Arrange (used for expenses)
+    void happyPath_searchByExpenseMerchant_ShouldReturnListOfExpenseDTOs() {
+        //Arrange
+        String testMerchant = "Starbucks";
         LocalDate date = LocalDate.now();
-        String id1 = "1";
-        String id2 = "2";
 
-        // creating list of expenses for the report
-        Expense e1 = new Expense(date, new BigDecimal("67.41"), "game stop");
-        e1.setId(id1);
-        ExpenseDTO dto1 = new ExpenseDTO(id1, date, new BigDecimal("67.41"), "game stop");
+        // Create mock Expense entities (The input to the Service method)
+        Expense entity1 = new Expense(date, new BigDecimal("12.50"), testMerchant);
+        entity1.setId("id1");
+        Expense entity2 = new Expense(date.minusDays(4), new BigDecimal("5.70"), testMerchant);
+        entity2.setId("id2");
+        List<Expense> mockEntities = List.of(entity1, entity2);
 
-        Expense e2 = new Expense(date, new BigDecimal("1000.00"), "Whataburger");
-        e2.setId(id2);
-        ExpenseDTO dto2 = new ExpenseDTO(id2, date, new BigDecimal("1000.00"), "Whataburger");
+        // Create the expected DTOs (The output you expect)
+        ExpenseDTO expectedDto1 = new ExpenseDTO("id1", date, new BigDecimal("12.50"), testMerchant);
+        ExpenseDTO expectedDto2 = new ExpenseDTO("id2", date.minusDays(4), new BigDecimal("5.70"), testMerchant);
+        List<ExpenseDTO> expectedDTOs = List.of(expectedDto1, expectedDto2);
 
-        // Create existing report
-        String reportId = "1";
-        Report existingReport = new Report("Old Title", "Pending");
-        existingReport.setReportId(reportId);
-        
-        // Put expenses in the report
-        e1.setReport(existingReport);
-        e2.setReport(existingReport);
-        existingReport.getReportExpenses().add(e1);
-        existingReport.getReportExpenses().add(e2);
-        
-        // Create updated report
-        Report updatedReport = new Report("New Title", "Approved");
-        updatedReport.setReportId(reportId);
-        updatedReport.getReportExpenses().add(e1);
-        updatedReport.getReportExpenses().add(e2);
-        
-        // Create DTO with updated values to pass to update method
-        ReportDTO updateDTO = new ReportDTO(reportId, "New Title", "Approved", List.of(dto1, dto2));
-        
-        // Expected
-        ReportDTO expected = new ReportDTO(reportId, "New Title", "Approved", List.of(dto1, dto2));
-        
-        // Mock repository calls
-        when(reportRepo.findById(reportId)).thenReturn(Optional.of(existingReport));
-        when(reportRepo.save(existingReport)).thenReturn(updatedReport);
-        
-        // Act
-        ReportDTO actual = reportService.update(reportId, updateDTO);
-        
-        // Assert
-        assertThat(actual).isEqualTo(expected);
+        // Mock the repository call to return our predefined list of Expense entities.
+        when(repo.findByExpenseMerchant(testMerchant)).thenReturn(mockEntities);
+
+        //Act
+        List<ExpenseDTO> actualDTOs = service.searchByExpenseMerchant(testMerchant);
+
+        //Assert
+        //Use recursive comparator to compare the ExpenseDTO objects to ensure the test doesn't fail due to reference inequality
+        assertThat(actualDTOs)
+                .usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(expectedDTOs);
+
+        //Verify that the service method correctly called the repository exactly once with the expected merchant name.
+        verify(repo, Mockito.times(1)).findByExpenseMerchant(testMerchant);
     }
 
-
     @Test
+    void sadPath_getExpenseById_returnsNullWhenNotFound() {
+        // Arrange
+        String id = "thisIdDoesNotExist";
+
+        // pretend the db has no entry for this id
+        when(repo.findById(id)).thenReturn(Optional.empty());
+
+        // Act
+        ExpenseDTO actual = service.getById(id);
+
+        // Assert
+        assertThat(actual).isNull();
+    }
+  
     void happyPath_searchExpensesByMerchant_returnsExpenseDTOList() {
         // Arrange
         // prep the value that should be in the db
