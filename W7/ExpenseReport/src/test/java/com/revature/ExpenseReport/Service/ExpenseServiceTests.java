@@ -66,6 +66,38 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
     }
+
+    // public ExpenseDTO update(String id, ExpenseDTO dto) {
+    //     Expense expense = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    //     expense.setDate(dto.expenseDate());
+    //     expense.setValue(dto.expenseValue());
+    //     expense.setMerchant(dto.expenseMerchant());
+
+    //     return ExpenseToDto(repository.save(expense));
+    // }
+
+    @Test
+    void happyPath_updateExpense_returnsUpdatedExpenseDTO(){
+        //Arrange
+        String id = "thisIsTheId";
+        LocalDate date = LocalDate.now();
+        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Walmart");
+        savedExpense.setId(id);
+        ExpenseDTO expected = new ExpenseDTO(id, date, new BigDecimal("100.00"), "Amazon");
+        Expense updated = new Expense(date, new BigDecimal("100.00"), "Amazon");
+        updated.setId(id);
+
+        when(repo.findById(id)).thenReturn(Optional.of(savedExpense));
+        when(repo.save(savedExpense)).thenReturn(updated);
+
+        // Act
+        ExpenseDTO actual = service.update(id, expected);
+
+        // Assert
+        assertThat(actual).isEqualTo(expected);
+    }
+
 }
 
 
