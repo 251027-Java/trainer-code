@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,19 +40,12 @@ public class ReportServiceTests {
     @Test
     void happyPath_getReportById_returnsExpenseDTO() {
 
-        String expenseId = "thisIsTheId";
-        LocalDate date = LocalDate.now();
-        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Video Games");
-        savedExpense.setId(expenseId);
-
-        ExpenseDTO expectedExpense = new ExpenseDTO(expenseId, date, new BigDecimal("50.00"), "Video Games");
-        List<ExpenseDTO> expenses = List.of(expectedExpense);
-
+    
         String reportId = "thisIsTheReportId";
         Report report = new Report("Groceries", "Accepted");
         report.setReportId(reportId);
 
-        ReportDTO expectedReport = new ReportDTO(reportId, "Groceries", "Accepted", expenses);
+        ReportDTO expectedReport = new ReportDTO(reportId, "Groceries", "Accepted", new ArrayList<>());
 
         when(reportRepository.findById(reportId)).thenReturn(Optional.of(report));
 
