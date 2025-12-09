@@ -13,7 +13,7 @@ public class ReportController {
     private final ReportService service;
 
     // Constructor
-    public ReportController(ReportService service){
+    public ReportController(ReportService service) {
         this.service = service;
     }
 
