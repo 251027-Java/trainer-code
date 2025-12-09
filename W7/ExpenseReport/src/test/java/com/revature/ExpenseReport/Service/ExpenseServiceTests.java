@@ -73,6 +73,10 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
 
+        
+
+    }
+
         @Test
         public void deleteExpense_HappyPath() {
             // Arrange
@@ -85,8 +89,6 @@ public class ExpenseServiceTests {
             Mockito.verify(expenseRepository, Mockito.times(1))
                     .deleteById(id);
         }
-
-    }
 
     @Test
     void happyPath_delete_deletesTheId() {
@@ -138,6 +140,7 @@ public class ExpenseServiceTests {
         verify(repo, Mockito.times(1)).findByExpenseMerchant(testMerchant);
     }
 }
+
 
 
 
