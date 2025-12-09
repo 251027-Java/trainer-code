@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -65,6 +66,36 @@ public class ExpenseServiceTests {
         // Assert
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void happyPath_update_returnsExpenseDTO() {
+        // Arrange
+        // prep the Expense value that should be in the db
+        String id = "n6ic9e";
+        LocalDate date = LocalDate.now();
+        Expense savedExpense = new Expense(date, new BigDecimal("50.00"), "Video Games" );
+        savedExpense.setId(id);
+
+        // prep the new ExpenseDTO to update with
+        ExpenseDTO updated = new ExpenseDTO(id, date, new BigDecimal("60.00"), "Video Games");
+
+        // prep our expected value to compare with for the assert - should be the same as the ExpenseDTO we're sending
+        ExpenseDTO expected = new ExpenseDTO(id, date, new BigDecimal("60.00"), "Video Games");
+
+        // "put" the fake entry in the db
+        when(repo.findById(id)).thenReturn(Optional.of(savedExpense));
+        // "get" the updated entry from the db
+        when(repo.save(any(Expense.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // ACT
+        ExpenseDTO actual = service.update(id, updated);
+
+        // Assert
+        // compare expected to actual
+        assertThat(actual).isEqualTo(expected);
+        //make sure the DTO we sent in wasn't changed
+        assertThat(updated).isEqualTo(expected);
     }
 }
 
