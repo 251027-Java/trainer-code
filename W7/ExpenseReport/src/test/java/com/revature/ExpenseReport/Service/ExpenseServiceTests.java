@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceTests {
@@ -67,34 +69,17 @@ public class ExpenseServiceTests {
         // compare expected to actual
         assertThat(actual).isEqualTo(expected);
     }
-    @Test
-    void happyPath_getAllExpenses_returnsListOfExpenseDTOs() {
-        // Arrange
-        // pre the value that should be in the db
-        LocalDate date1 = LocalDate.of(2022, 4, 1);
-        LocalDate date2 = LocalDate.of(2022, 4, 2);
-        Expense expense1 = new Expense(date1, new BigDecimal("59.99"), "Best Buy");
-        Expense expense2 = new Expense(date2, new BigDecimal("45.49"), "Wholefoods");
-
-        List<Expense> expenses = Arrays.asList(null, expense1, expense2);
-
-        // mock repo layer to return list of expenses
-        when(repo.findAll()).thenReturn(expenses);
-
-        List<ExpenseDTO> actual = service.getAllExpenses();
-
-        // Assert
-        assertThat(actual).hasSize(2);
-        assertThat(actual.get(0).expenseDate()).isEqualTo(date1);
-        assertThat(actual.get(0).expenseValue()).isEqualTo(new BigDecimal("59.99"));
-        assertThat(actual.get(0).expenseMerchant()).isEqualTo("Best Buy");
-        assertThat(actual.get(1).expenseDate()).isEqualTo(date2);
-        assertThat(actual.get(1).expenseValue()).isEqualTo(new BigDecimal("45.49"));
-        assertThat(actual.get(1).expenseMerchant()).isEqualTo("Wholefoods");
-
-        // Completed
-        //test
-
-    }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

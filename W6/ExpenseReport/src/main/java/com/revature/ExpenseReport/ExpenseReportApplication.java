@@ -20,18 +20,18 @@ import java.util.List;
 @SpringBootApplication
 public class ExpenseReportApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ExpenseReportApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ExpenseReportApplication.class, args);
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean // Bean is a single method that is run after the application is started
-    CommandLineRunner seedData (ExpenseRepository expenseRepository, ReportRepository reportRepository, AppUserRepository appUserRepository, PasswordEncoder encoder) {
+    CommandLineRunner seedData(ExpenseRepository expenseRepository, ReportRepository reportRepository,
+            AppUserRepository appUserRepository, PasswordEncoder encoder) {
         return args -> {
 
             // Report seed
@@ -59,31 +59,15 @@ public class ExpenseReportApplication {
     }
 }
 
-
-
-
 // Params
 // report id, expense id
-
 
 // verify they exist in the database
 // retrieve from the db
 // is the expense already on a report?
-//  - if it is...?
-//      - stop the action, alert the user
-//  - if it's not...?
-//      -attach the expense to the report, and the report id to the expense
+// - if it is...?
+// - stop the action, alert the user
+// - if it's not...?
+// -attach the expense to the report, and the report id to the expense
 
 // save to the db
-
-
-
-
-
-
-
-
-
-
-
-
