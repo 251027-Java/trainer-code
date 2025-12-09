@@ -6,8 +6,7 @@ import com.revature.ExpenseReport.Controller.ExpenseWOIDDTO;
 import com.revature.ExpenseReport.Model.Expense;
 import com.revature.ExpenseReport.Model.Report;
 import com.revature.ExpenseReport.Repository.ExpenseRepository;
-import com.revature.ExpenseReport.Repository.ReportRepository;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,17 +22,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertNull;
 
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceTests {
-
+    private Expense expense1;
+    @BeforeEach
+    void setUp() {
+        expense1 = new Expense(LocalDate.of(2025, 12, 9), new BigDecimal("50.00"), "Walmart");
+        expense1.setId("1");
+    }
     // Fields
     @Mock
     private ExpenseRepository repo;
@@ -175,7 +178,7 @@ public class ExpenseServiceTests {
 
         service.delete(id);
 
-        Mockito.verify(repo, Mockito.times(1)).deleteById(id);
+        verify(repo, times(1)).deleteById(id);
     }
 
     /*
@@ -275,7 +278,7 @@ public class ExpenseServiceTests {
         String id = "somerandomid";
 
         service.delete(id);
-        
+
         verify(repo, times(1)).deleteById(id);
     }
 
@@ -424,44 +427,29 @@ public class ExpenseServiceTests {
         // Assert
         assertThat(actual).isEqualTo(expected);
     }
-//Create an Expense Test
-@Test
-void happyPath_createExpense_returnsExpenseDTO() {
-    // Arrange
-    // prep the value we want to create (without ID)
-    LocalDate date = LocalDate.now();
-    ExpenseWOIDDTO newExpense = new ExpenseWOIDDTO(date, new BigDecimal("75.00"), "Amazon");
+  //Create an Expense Test
+  @Test
+  void happyPath_createExpense_returnsExpenseDTO() {
+      // Arrange
+      // prep the value we want to create (without ID)
+      LocalDate date = LocalDate.now();
+      ExpenseWOIDDTO newExpense = new ExpenseWOIDDTO(date, new BigDecimal("75.00"), "Amazon");
 
-    // prep the value that will be saved in the db (with ID)
-    Expense savedExpense = new Expense(date, new BigDecimal("75.00"), "Amazon");
-    savedExpense.setId("generatedId");
+      // prep the value that will be saved in the db (with ID)
+      Expense savedExpense = new Expense(date, new BigDecimal("75.00"), "Amazon");
+      savedExpense.setId("generatedId");
 
-    // prep our expected value to compare with for the assert
-    ExpenseDTO expected = new ExpenseDTO("generatedId", date, new BigDecimal("75.00"), "Amazon");
+      // prep our expected value to compare with for the assert
+      ExpenseDTO expected = new ExpenseDTO("generatedId", date, new BigDecimal("75.00"), "Amazon");
 
-    // mock what happens when we save to the db
-    when(repo.save(any(Expense.class))).thenReturn(savedExpense);
+      // mock what happens when we save to the db
+      when(repo.save(any(Expense.class))).thenReturn(savedExpense);
 
-    // ACT
-    ExpenseDTO actual = service.create(newExpense);
+      // ACT
+      ExpenseDTO actual = service.create(newExpense);
 
-    // Assert
-    // compare expected to actual
-    assertThat(actual).isEqualTo(expected);
+      // Assert
+      // compare expected to actual
+      assertThat(actual).isEqualTo(expected);
+  }
 }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
