@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertNull;
 
@@ -139,14 +141,30 @@ public class ExpenseServiceTests {
     @Test
     public void deleteExpense_HappyPath() {
         // Arrange
-        Mockito.doNothing().when(expenseRepository).deleteById(id);
+        String id = "expense-123";
+        LocalDate date = LocalDate.of(2024, 2, 20);
+        Expense existingExpense = new Expense(LocalDate.now(), new BigDecimal("50.00"), "Old");
+        existingExpense.setId(id);
+        Expense updatedExpense = new Expense(date, new BigDecimal("150.75"), "Target");
+        updatedExpense.setId(id);
+        ExpenseDTO updateDto = new ExpenseDTO(id, date, new BigDecimal("150.75"), "Target");
+        when(repo.findById(id)).thenReturn(Optional.of(existingExpense));
+        when(repo.save(any(Expense.class))).thenReturn(updatedExpense);
+        // Act
+        ExpenseDTO actual = service.update(id, updateDto);
+        // Assert
+        assertThat(actual).isEqualTo(updateDto);
+    }
+    @Test
+    void deleteExpense_HappyPath() {
+        // Arrange
+        String id = "expense-to-delete";
 
         // ACT
-        expenseService.deleteExpense(id);
+        service.delete(id);
 
         // Assert
-        Mockito.verify(expenseRepository, Mockito.times(1))
-                .deleteById(id);
+        verify(repo, times(1)).deleteById(id);
     }
 
     @Test
