@@ -1,77 +1,72 @@
--- Active: 1762363179651@@127.0.0.1@5432@mysampledb
-CREATE DATABASE mySampleDb;
-CREATE DATABASE expensesdb;
+-- Active: 1762365246390@@127.0.0.1@5432@mysimpledb
+CREATE DATABASE mySimpleDb;
 
--- switch to mySampleDb BEFORE running this
+--dont forget to switch to new database
 CREATE SCHEMA mySampleSchema;
 
 CREATE TABLE mySampleSchema.myNewTable (
+    --id INTEGER UNIQUE NOT NULL,
     id INTEGER PRIMARY KEY,
-    email VARCHAR(100), -- we tell system the max amount of characters in this value for mem management
-    createdAT TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- if we don't define this, the current time is added as default
+    email VARCHAR(100),
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     salary FLOAT CHECK (salary > 0),
-    -- secondSalary DOUBLE,
-    thirdSalary DECIMAL,
-    fourthSalary NUMERIC(10, 2) -- NUMERIC - precision (num of digits), scale (num of digits after decimal)
+    --secondSalary DOUBLE,
+    thirdSalaray DECIMAL,
+    fourthSalary NUMERIC (10,2) --precison (total number of digits), scale (maximum number of digits to the right of the decimal)
 );
 
-CREATE TABLE mySampleSchema.AnotherSimpleTable (
+CREATE TABLE mySampleSchema.anotherSampleTable (
     id INTEGER PRIMARY KEY,
-    name VARCHAR(100)
-    -- CONSTRAINT foreign key can also be added here
+    name VARCHAR (100)
+    --CONSTRAINT...
 );
 
-ALTER TABLE mySampleSchema.AnotherSimpleTable
+ALTER TABLE mySampleSchema.anotherSampleTable
 ADD COLUMN newTable_id INTEGER;
 
-ALTER TABLE mysampleschema.anothersimpletable
+ALTER TABLE mySampleSchema.anotherSampleTable
 ADD CONSTRAINT fk_newTable_id
 FOREIGN KEY (newTable_id) REFERENCES mysampleschema.myNewTable (id);
+DROP TABLE mySampleSchema.myNewTable;
+DROP TABLE mysampleschema.anotherSimpleTable;
+DROP CONSTRAINT fk_newTable_id;
 
 /*
-
-DML: Data Manipulation Language
-    - INSERT
-    - UPDATE
-    - DELETE
-- Table records are being manipulated, table structure is NOT being changed
-
+DML- Data Manipulation Language
+--Used ton perform actions on the data
+-INSERT
+-UPDATE
+-DELETE
 */
 
-insert into mysampleschema.mynewtable 
-(id, email, salary, thirdSalary, fourthSalary) 
-values 
-(1, 'a@b.com', 1000, 20.00, 8.00),
-(2, 'c@b.com', 1000, 20.00, 8.00),
-(3, 'd@b.com', 1000, 20.00, 8.00),
-(4, 'e@b.com', 1000, 20.00, 8.00);
+INSERT INTO mySampleSchema.mynewtable
+(id, email, salary, thirdSalaray, fourthSalary)
+VALUES
+(1, 'a@c.com', 10000, 100.00, 100.00),
+(2, 'b@c.com', 10000, 100.00, 100.00),
+(3, 'c@c.com', 10000, 100.00, 100.00),
+(4, 'd@c.com', 10000, 100.00, 100.00),
+(5, 'e@c.com', 10000, 100.00, 100.00);
+(6, 'f@c.com', 14070, 185.00, 101.00);
+ON CONFLICT DO NOTHING;
+INSERT INTO mySampleSchema.mynewtable
+(id, email, salary, thirdSalaray, fourthSalary)
+VALUES
+(6, 'f@c.com', 37200, 120.89, 121.00);
 
-insert into mysampleschema.anothersimpletable
-(id, name, newTable_id) 
-values 
-(1, 'Abe', 1),
-(2, 'bob', 2),
-(5, 'Simon', 3),
-(4, 'Eddie', 4);
+INSERT INTO mysampleschema.anothersampletable
+(id, name, newTable_id)
+VALUES
+(1, 'jimmy', 1),
+(2, 'sam', 2),
+(3, 'turner', 3),
+(4, 'marcus', 4),
+(5, 'jordan', 5);
 
-insert into mysampleschema.anothersimpletable (id, name, newtable_id)
-values (6, 'Frank', 7);
 
-select * from mysampleschema.anothersimpletable as simple left join mysampleschema.mynewtable as mnt
-on simple.newtable_id = mnt.id;
 
-ALTER TABLE mysampleschema.anothersimpletable DROP CONSTRAINT fk_newTable_id;
-DROP TABLE mysampleschema.anothersimpletable;
-DROP TABLE mysampleschema.mynewtable;
 
-/******************************************************************************
-    How to Present our Database
-******************************************************************************/
-/*
 
-- Entity Relationship Diagram
-    - Entities are tables, shows relationships between the tables
-    - Relationships: 1:1, 1:N, N:N
-        - Crow's Foot
 
-*/
+
+
