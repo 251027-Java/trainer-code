@@ -160,10 +160,10 @@ If Broker 1 fails, Broker 2 or 3 becomes the new leader.
 │  │              │   │              │   │              │       │
 │  │ Topic: users │   │ Topic: users │   │ Topic: orders│       │
 │  │ Partition 0  │   │ Partition 1  │   │ Partition 0  │       │
-│  │ (Leader)     │   │ (Leader)     │   │ (Leader)     │       │
+│  │ (Leader)     │   │ (Follower)   │   │ (Leader)     │       │
 │  │              │   │              │   │              │       │
 │  │ Topic: orders│   │ Topic: users │   │ Topic: users │       │
-│  │ Partition 1  │   │ Partition 0  │   │ Partition 1  │       │
+│  │ Partition 0  │   │ Partition 0  │   │ Partition 1  │       │
 │  │ (Replica)    │   │ (Replica)    │   │ (Replica)    │       │
 │  └──────────────┘   └──────────────┘   └──────────────┘       │
 │                                                                 │
