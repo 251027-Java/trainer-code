@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres
+    container_name: expense_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: mydb
+    volumes:
+      - expense-data:/var/lib/postgresql
+    
+  api:
+    build: .
+    container_name: expense_api
+    ports:
+      - "5432:5432"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  expense-data: 
