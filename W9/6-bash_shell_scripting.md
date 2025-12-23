@@ -3,16 +3,20 @@
 ## 1. Introduction to Shell Scripting
 
 ### What is a Shell?
+
 A **shell** is a command-line interpreter that provides a user interface for the Unix/Linux operating system. It takes commands from the user and passes them to the kernel for execution.
 
 ### What is Bash?
+
 **Bash** (Bourne Again Shell) is:
+
 - The default shell on most Linux distributions and macOS (prior to Catalina)
 - A superset of the original Bourne shell (sh)
 - Released in 1989 by Brian Fox for the GNU Project
 - POSIX-compliant with many extensions
 
 ### Why Learn Shell Scripting?
+
 | Use Case | Example |
 |----------|---------|
 | **Automation** | Automate repetitive tasks like backups, deployments |
@@ -22,6 +26,7 @@ A **shell** is a command-line interpreter that provides a user interface for the
 | **Data Processing** | Parse logs, transform files, batch operations |
 
 ### Shell vs. Scripting Language
+
 | Feature | Shell Scripts | Python/Ruby |
 |---------|---------------|-------------|
 | **System commands** | Native, easy | Requires subprocess |
@@ -35,6 +40,7 @@ A **shell** is a command-line interpreter that provides a user interface for the
 ## 2. The Shebang
 
 ### What is a Shebang?
+
 The **shebang** (also called hashbang, sha-bang, or pound-bang) is the first line of a script that tells the system which interpreter to use.
 
 ```bash
@@ -42,6 +48,7 @@ The **shebang** (also called hashbang, sha-bang, or pound-bang) is the first lin
 ```
 
 ### Anatomy of the Shebang
+
 ```
 #!/bin/bash
 │└─────────── Path to the interpreter
@@ -49,6 +56,7 @@ The **shebang** (also called hashbang, sha-bang, or pound-bang) is the first lin
 ```
 
 ### Common Shebangs
+
 | Shebang | Interpreter | Use Case |
 |---------|-------------|----------|
 | `#!/bin/bash` | Bash shell | Most Linux scripts |
@@ -58,11 +66,14 @@ The **shebang** (also called hashbang, sha-bang, or pound-bang) is the first lin
 | `#!/usr/bin/env node` | Node.js | JavaScript scripts |
 
 ### Why Use `#!/usr/bin/env bash`?
+
 The `env` command searches the `PATH` for the interpreter. This is more portable because:
+
 - Bash might be in `/bin/bash` on Linux
 - Bash might be in `/usr/local/bin/bash` on macOS (via Homebrew)
 
 ### Making Scripts Executable
+
 ```bash
 # Add execute permission
 chmod +x myscript.sh
@@ -79,6 +90,7 @@ bash myscript.sh
 ## 3. Variables
 
 ### Declaring Variables
+
 Variables in Bash have no data types. All values are stored as strings.
 
 ```bash
@@ -92,6 +104,7 @@ name = "Alice"   # Error: "name: command not found"
 ```
 
 ### Using Variables
+
 ```bash
 # Access with $
 echo $name
@@ -107,6 +120,7 @@ echo "$nameSmith"      # Empty (trying to access variable "nameSmith")
 ### Variable Types
 
 #### String Variables
+
 ```bash
 greeting="Hello, World!"
 path="/home/user/documents"
@@ -119,6 +133,7 @@ echo ${greeting:0:5}   # Hello
 ```
 
 #### Numeric Variables
+
 ```bash
 count=10
 result=$((count + 5))  # Arithmetic expansion
@@ -130,6 +145,7 @@ count=$((count + 1))
 ```
 
 #### Arrays
+
 ```bash
 # Indexed array
 fruits=("apple" "banana" "cherry")
@@ -148,6 +164,7 @@ echo ${user[name]}     # Alice
 ```
 
 ### Special Variables
+
 | Variable | Meaning | Example |
 |----------|---------|---------|
 | `$0` | Script name | `./myscript.sh` |
@@ -160,12 +177,14 @@ echo ${user[name]}     # Alice
 | `$!` | PID of last background command | `12346` |
 
 ### Read-Only Variables
+
 ```bash
 readonly PI=3.14159
 PI=3.14  # Error: PI: readonly variable
 ```
 
 ### Environment Variables
+
 ```bash
 # Export to make available to child processes
 export MY_VAR="value"
@@ -181,6 +200,7 @@ echo $PWD       # current directory
 ```
 
 ### Command Substitution
+
 ```bash
 # Capture command output in a variable
 current_date=$(date +%Y-%m-%d)
@@ -195,6 +215,7 @@ current_date=`date +%Y-%m-%d`
 ## 4. Command-Line Arguments
 
 ### Positional Parameters
+
 ```bash
 #!/bin/bash
 echo "Script name: $0"
@@ -205,6 +226,7 @@ echo "All arguments: $@"
 ```
 
 ### Example Invocation
+
 ```bash
 ./script.sh hello world 42
 
@@ -217,6 +239,7 @@ echo "All arguments: $@"
 ```
 
 ### `$@` vs `$*`
+
 The difference matters when arguments contain spaces:
 
 ```bash
@@ -237,6 +260,7 @@ done
 ```
 
 ### Default Values
+
 ```bash
 # Use default if variable is empty or unset
 name=${1:-"Guest"}
@@ -249,6 +273,7 @@ name=${1-"Guest"}
 ```
 
 ### Shift Command
+
 ```bash
 #!/bin/bash
 echo "Before shift: $1 $2 $3"
@@ -265,6 +290,7 @@ echo "After shift: $1 $2 $3"
 ## 5. User Input
 
 ### The `read` Command
+
 ```bash
 # Basic read
 echo "Enter your name:"
@@ -287,6 +313,7 @@ echo "First fruit: ${fruits[0]}"
 ```
 
 ### Read Options
+
 | Option | Description |
 |--------|-------------|
 | `-p "prompt"` | Display prompt before reading |
@@ -301,6 +328,7 @@ echo "First fruit: ${fruits[0]}"
 ## 6. Conditionals
 
 ### if/else Syntax
+
 ```bash
 if [ condition ]; then
     # commands
@@ -314,6 +342,7 @@ fi
 ### Test Operators
 
 #### Numeric Comparisons
+
 | Operator | Meaning |
 |----------|---------|
 | `-eq` | Equal |
@@ -330,6 +359,7 @@ fi
 ```
 
 #### String Comparisons
+
 | Operator | Meaning |
 |----------|---------|
 | `=` or `==` | Equal |
@@ -350,6 +380,7 @@ fi
 ```
 
 #### File Tests
+
 | Operator | Meaning |
 |----------|---------|
 | `-e file` | File exists |
@@ -372,6 +403,7 @@ fi
 ```
 
 ### Logical Operators
+
 ```bash
 # AND
 if [ $a -gt 0 ] && [ $b -gt 0 ]; then
@@ -390,6 +422,7 @@ fi
 ```
 
 ### The `[[` Double Bracket
+
 The `[[` syntax is a Bash extension with more features:
 
 ```bash
@@ -410,6 +443,7 @@ fi
 ```
 
 ### Case Statement
+
 ```bash
 case $option in
     1|one)
@@ -429,6 +463,7 @@ esac
 ## 7. Loops
 
 ### For Loop
+
 ```bash
 # Loop over list of items
 for fruit in apple banana cherry; do
@@ -462,6 +497,7 @@ done
 ```
 
 ### While Loop
+
 ```bash
 # Basic while
 count=5
@@ -483,6 +519,7 @@ done
 ```
 
 ### Until Loop
+
 ```bash
 # Opposite of while - runs until condition is true
 count=0
@@ -493,6 +530,7 @@ done
 ```
 
 ### Loop Control
+
 ```bash
 # break - exit the loop
 for i in {1..10}; do
@@ -518,6 +556,7 @@ done
 ## 8. Functions
 
 ### Defining Functions
+
 ```bash
 # Syntax 1
 function greet {
@@ -531,6 +570,7 @@ greet() {
 ```
 
 ### Function Parameters
+
 ```bash
 greet_user() {
     local name=$1    # $1 inside function refers to function argument
@@ -542,6 +582,7 @@ greet_user "Alice" "morning"   # Good morning, Alice!
 ```
 
 ### Local Variables
+
 ```bash
 my_function() {
     local local_var="I'm local"
@@ -554,6 +595,7 @@ echo $global_var   # I'm global
 ```
 
 ### Return Values
+
 Bash functions can only return numeric exit codes (0-255).
 
 ```bash
@@ -572,6 +614,7 @@ fi
 ```
 
 ### Returning Strings
+
 Use command substitution to capture function output:
 
 ```bash
@@ -589,7 +632,9 @@ echo "$message"   # Welcome, Alice!
 ## 9. Exit Codes
 
 ### Understanding Exit Codes
+
 Every command returns an exit code:
+
 - **0**: Success
 - **1-255**: Failure (different codes for different errors)
 
@@ -603,6 +648,7 @@ echo $?    # 2 (no such file or directory)
 ```
 
 ### Setting Exit Codes
+
 ```bash
 #!/bin/bash
 
@@ -616,6 +662,7 @@ exit 0    # Explicit success
 ```
 
 ### Common Exit Codes
+
 | Code | Meaning |
 |------|---------|
 | 0 | Success |
@@ -631,6 +678,7 @@ exit 0    # Explicit success
 ## 10. Input/Output Redirection
 
 ### Standard Streams
+
 | Stream | Number | Default |
 |--------|--------|---------|
 | stdin | 0 | Keyboard |
@@ -638,6 +686,7 @@ exit 0    # Explicit success
 | stderr | 2 | Terminal |
 
 ### Output Redirection
+
 ```bash
 # Redirect stdout to file (overwrite)
 echo "Hello" > output.txt
@@ -658,6 +707,7 @@ command > /dev/null 2>&1
 ```
 
 ### Input Redirection
+
 ```bash
 # Read from file
 while read line; do
@@ -676,6 +726,7 @@ grep "pattern" <<< "search in this string"
 ```
 
 ### Pipes
+
 ```bash
 # Pass output of one command to another
 ls -la | grep ".txt"
@@ -689,6 +740,7 @@ cat file.txt | sort | uniq | wc -l
 ## 11. Best Practices
 
 ### Script Template
+
 ```bash
 #!/usr/bin/env bash
 #
@@ -734,6 +786,7 @@ main "$@"
 ```
 
 ### The `set` Command
+
 ```bash
 set -e    # Exit immediately if a command fails
 set -u    # Treat unset variables as errors
@@ -745,6 +798,7 @@ set -euo pipefail
 ```
 
 ### Quoting Best Practices
+
 ```bash
 # Always quote variables to handle spaces
 file="my file.txt"
@@ -758,6 +812,7 @@ done
 ```
 
 ### Error Handling
+
 ```bash
 # Check command success
 if ! command -v docker &> /dev/null; then
@@ -784,6 +839,7 @@ trap 'handle_error $LINENO' ERR
 ## 12. Useful Commands for Scripts
 
 ### Text Processing
+
 ```bash
 # grep - search patterns
 grep "error" logfile.log
@@ -806,6 +862,7 @@ cat file | sort | uniq | wc -l  # Count unique lines
 ```
 
 ### File Operations
+
 ```bash
 # Find files
 find . -name "*.sh" -type f
@@ -824,10 +881,12 @@ echo "Data" > "$tmpfile"
 ## 13. Resources
 
 ### Online Tools
+
 - [ShellCheck](https://www.shellcheck.net/) - Linter for shell scripts
 - [Explain Shell](https://explainshell.com/) - Explain command line arguments
 
 ### Documentation
+
 - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/)
 - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/html/)
 - [Bash Pitfalls](https://mywiki.wooledge.org/BashPitfalls)
