@@ -23,5 +23,10 @@ module.exports = (webpackConfigEnv, argv) => {
       "react/jsx-dev-runtime",
       "single-spa-react",
     ],
+    output: {
+      publicPath: webpackConfigEnv.production
+        ? "http://2304-sspa-navbar.s3-website-us-west-1.amazonaws.com/"
+        : "http://localhost:8081/",
+    }
   });
 };
