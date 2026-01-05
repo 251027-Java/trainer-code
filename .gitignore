@@ -37,3 +37,5 @@ build/
 
 **/node_modules/**
 *.pem
+
+*/es-data/
